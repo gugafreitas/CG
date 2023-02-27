@@ -44,15 +44,28 @@ void renderScene(void) {
 			  0.0f,1.0f,0.0f);
 
 // put axis drawing in here
-
+	glBegin(GL_LINES);
+		// X axis in red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f( 100.0f, 0.0f, 0.0f);
+		// Y Axis in Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		// Z Axis in Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
 
 // put the geometric transformations here
 
 
-// put pyramid drawing instructions here
+// put sphere drawing instructions here
+	glutWireSphere(1,100,100);
 
-
-	// End of frame
+// End of frame
 	glutSwapBuffers();
 }
 
@@ -65,7 +78,7 @@ void renderScene(void) {
 
 
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[]) {
 
 // init GLUT and the window
 	glutInit(&argc, argv);
