@@ -6,6 +6,26 @@
 
 #include <math.h>
 
+float posx = 0, posz = 0, posy = 0, angle = 0, scalex = 0, scaley = 0, scalez = 0;
+int radius = 1, height = 1, slices = 10, stacks = 10;
+
+typedef struct polar {
+	double radius;
+	double alpha;
+	double beta;
+}Polar;
+
+double polarX(Polar polar) { 
+	return polar.radius * cos(polar.beta) * sin(polar.alpha); 
+	}
+double polarY(Polar polar) { 
+	return polar.radius * sin(polar.beta); 
+	}
+double polarZ(Polar polar) { 
+	return polar.radius * cos(polar.beta) * cos(polar.alpha); 
+	}
+
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -31,6 +51,10 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void drawCone(int radius, int height, int slices, int stacks){
+	glutWireCone((GLint)radius,(GLint)height,(GLdouble)slices,(GLdouble)stacks);
+}
+
 
 void renderScene(void) {
 
@@ -43,27 +67,13 @@ void renderScene(void) {
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
-// put axis drawing in here
-	glBegin(GL_LINES);
-		// X axis in red
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, 0.0f);
-		glVertex3f( 100.0f, 0.0f, 0.0f);
-		// Y Axis in Green
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(0.0f, -100.0f, 0.0f);
-		glVertex3f(0.0f, 100.0f, 0.0f);
-		// Z Axis in Blue
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(0.0f, 0.0f, -100.0f);
-		glVertex3f(0.0f, 0.0f, 100.0f);
-	glEnd();
+	// put the geometric transformations here
+	glTranslatef(posx,posy,posz);
+	glRotatef(angle, 0.0, 1.0, 0.0);
+	glScalef(scalex,scaley,scalez);
 
-// put the geometric transformations here
-
-
-// put cone drawing instructions here
-	glutWireCone(1,1,100,100);
+	// put cone drawing instructions here
+	drawCone(radius, height, slices, stacks);
 
 	// End of frame
 	glutSwapBuffers();
@@ -72,7 +82,45 @@ void renderScene(void) {
 
 
 // write function to process keyboard events
-
+void keyboardFunc(unsigned char key, int x, int y) {
+	switch(key) {
+		case 'a':
+			posx -= 0.1;
+			break;
+		case 'd':
+			posx += 0.1;
+			break;
+		case 's':
+			posz += 0.1;
+			break;
+		case 'w':
+			posz -= 0.1;
+			break;
+		case 't':
+			posy += 0.1;
+			break;
+		case 'g':
+			posy -= 0.1;
+			break;
+		case 'q':
+			angle -= 1;
+			break;
+		case 'e':
+			angle += 1;
+			break;
+		case 'z':
+			scalex += 0.1;
+			scaley += 0.1;
+			scalez += 0.1;
+			break;
+		case 'x':
+			scalex -= 0.1;
+			scaley -= 0.1;
+			scalez -= 0.1;
+			break;
+	}
+	glutPostRedisplay();
+}
 
 
 
@@ -93,7 +141,7 @@ int main(int argc, char **argv) {
 
 	
 // put here the registration of the keyboard callbacks
-
+	glutKeyboardFunc(keyboardFunc);
 
 
 //  OpenGL settings

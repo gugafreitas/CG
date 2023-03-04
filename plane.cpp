@@ -31,6 +31,15 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void drawPlane(){
+	glBegin(GL_QUADS);
+	
+	glColor3f(0.0f, 0.0f, 1.0f); // blue
+	glVertex3f(0.0f,0.0f,0.0f);
+	
+	glEnd();
+}
+
 
 void renderScene(void) {
 
@@ -44,12 +53,26 @@ void renderScene(void) {
 			  0.0f,1.0f,0.0f);
 
 // put axis drawing in here
-
+	glBegin(GL_LINES);
+		// X axis in red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f( 100.0f, 0.0f, 0.0f);
+		// Y Axis in Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		// Z Axis in Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
 
 // put the geometric transformations here
 
 
 // put pyramid drawing instructions here
+
 
 
 	// End of frame
