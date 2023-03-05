@@ -6,6 +6,8 @@
 
 #include <math.h>
 
+float posx = 0, posz = 0, angle = 0, scalex = 1, scaley = 1, scalez = 1,posy=0;
+
 void changeSize(int w, int h) {
 
 	// Prevent a divide by zero, when window is too short
@@ -52,7 +54,7 @@ void renderScene(void) {
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
-// put axis drawing in here
+	// put axis drawing in here
 	glBegin(GL_LINES);
 		// X axis in red
 		glColor3f(1.0f, 0.0f, 0.0f);
@@ -68,10 +70,10 @@ void renderScene(void) {
 		glVertex3f(0.0f, 0.0f, 100.0f);
 	glEnd();
 
-// put the geometric transformations here
+	// put the geometric transformations here
 
 
-// put pyramid drawing instructions here
+	// put plane drawing instructions here
 
 
 
@@ -82,7 +84,46 @@ void renderScene(void) {
 
 
 // write function to process keyboard events
+void keyboardFunc(unsigned char key, int x, int y) {
+	switch(key) {
+		case 'a':
+			posx -= 0.1;
+			break;
+		case 'd':
+			posx += 0.1;
+			break;
+		case 's':
+			posz += 0.1;
+			break;
+		case 'w':
+			posz -= 0.1;
+			break;
+		case 'q':
+			angle -= 15;
+			break;
+		case 'e':
+			angle += 15;
+			break;
+		case 'z':
+			scalez += 0.1;
+			scaley += 0.1;
+			scalex += 0.1;
+			break;
+		case 'x':
+			scalez -= 0.1;
+			scalex -= 0.1;
+			scaley -= 0.1;
+			break;		
+		case 't':
+			posy += 0.1;
+			break;
+		case 'g':
+			posy -= 0.1;
+			break;
 
+	}
+	glutPostRedisplay();
+}
 
 
 

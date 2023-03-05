@@ -31,6 +31,64 @@ void changeSize(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void drawBox(GLfloat centerPosX, GLfloat centerPosy, GLfloat centerPosZ, GLfloat length, GLfloat divs){
+	GLfloat halfSideLength = length * 0.5;
+
+	glBegin(GL_TRIANGLE_FAN);
+
+	// Set the color to blue
+    glColor3f(0.0f, 0.0f, 1.0f);
+	// front face
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //top left
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //top right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //bottom right
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //bottom left
+
+	//Set the color to red
+	glColor3f(1.0f, 0.0f, 0.0f);
+	//back face
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //top left
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //top right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //bottom right
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //bottom left
+
+	//Set the color to green
+	glColor3f(1.0f, 0.0f, 0.0f);
+	//left face
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //top left
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //top right
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //bottom right
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //bottom left
+
+	//Set the color to yellow
+	glColor3f(1.0f, 1.0f, 0.0f);
+	//right face
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //top left
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //top right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //bottom right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //bottom left
+
+	//Set the color to purple
+	glColor3f(1.0f, 0.5f, 1.0f);
+	//top face
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //top left
+	glVertex3f(centerPosX - halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //top right
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ - halfSideLength); //bottom right
+	glVertex3f(centerPosX + halfSideLength,centerPosy + halfSideLength,centerPosZ + halfSideLength); //bottom left
+
+	//Set the color to orange
+	glColor3f(1.0f, 0.5f, 0.0f);
+	//bottom face
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //top left
+	glVertex3f(centerPosX - halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //top right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ - halfSideLength); //bottom right
+	glVertex3f(centerPosX + halfSideLength,centerPosy - halfSideLength,centerPosZ + halfSideLength); //bottom left
+
+	glEnd();
+
+
+
+}
 
 void renderScene(void) {
 
@@ -43,13 +101,28 @@ void renderScene(void) {
 		      0.0,0.0,0.0,
 			  0.0f,1.0f,0.0f);
 
-// put axis drawing in here
+	// put axis drawing in here
+	glBegin(GL_LINES);
+		// X axis in red
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, 0.0f);
+		glVertex3f( 100.0f, 0.0f, 0.0f);
+		// Y Axis in Green
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3f(0.0f, -100.0f, 0.0f);
+		glVertex3f(0.0f, 100.0f, 0.0f);
+		// Z Axis in Blue
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3f(0.0f, 0.0f, -100.0f);
+		glVertex3f(0.0f, 0.0f, 100.0f);
+	glEnd();
 
 
-// put the geometric transformations here
+	// put the geometric transformations here
 
 
-// put pyramid drawing instructions here
+	// put box drawing instructions here
+	//drawBox(0.0f,0.0f,0.0f,);
 
 
 	// End of frame

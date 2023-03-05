@@ -54,7 +54,7 @@ void renderScene(void) {
 
 
 // put sphere drawing instructions here
-	glutWireSphere(1,100,100);
+
 
 // End of frame
 	glutSwapBuffers();

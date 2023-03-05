@@ -7,9 +7,9 @@
 #include <math.h>
 
 float posx = 0, posz = 0, posy = 0, angle = 0, scalex = 0, scaley = 0, scalez = 0;
-int radius = 1, height = 1, slices = 10, stacks = 10;
+int radius = 1, height = 1, slices = 100, stacks = 10;
 
-typedef struct polar {
+/*typedef struct polar {
 	double radius;
 	double alpha;
 	double beta;
@@ -23,7 +23,7 @@ double polarY(Polar polar) {
 	}
 double polarZ(Polar polar) { 
 	return polar.radius * cos(polar.beta) * cos(polar.alpha); 
-	}
+}*/
 
 
 void changeSize(int w, int h) {
@@ -52,7 +52,35 @@ void changeSize(int w, int h) {
 }
 
 void drawCone(int radius, int height, int slices, int stacks){
-	glutWireCone((GLint)radius,(GLint)height,(GLdouble)slices,(GLdouble)stacks);
+	//glutWireCone((GLint)radius,(GLint)height,(GLdouble)slices,(GLdouble)stacks);
+	GLint numberOfVertices = slices + 2;
+	GLfloat doublePi = 2.0f * M_PI;
+	GLfloat circleVerticesX[numberOfVertices];
+	GLfloat circleVerticesZ[numberOfVertices];
+	GLfloat circleVerticesY[numberOfVertices];
+
+	circleVerticesX[0] = posx;
+	circleVerticesZ[0] = posz;
+	circleVerticesY[0] = posy;
+
+	for(int i=1; i<numberOfVertices;i++){
+		circleVerticesX[i] = posx + (radius * cos(i * doublePi / slices));
+		circleVerticesY[i] = posy + (radius * sin(i * doublePi / slices));
+		circleVerticesZ[i] = posz;
+	}
+
+	GLfloat allCircleVertices[numberOfVertices * 3];
+
+	for(int i=0; i<numberOfVertices; i++){
+		allCircleVertices[i*3] = circleVerticesX[i];
+		allCircleVertices[(i*3) + 1] = circleVerticesY[i];
+		allCircleVertices[(i*3) + 2] = circleVerticesZ[i];
+	}
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, allCircleVertices);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, numberOfVertices);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 
@@ -73,6 +101,7 @@ void renderScene(void) {
 	glScalef(scalex,scaley,scalez);
 
 	// put cone drawing instructions here
+	glColor3ub(255,0,0);
 	drawCone(radius, height, slices, stacks);
 
 	// End of frame
