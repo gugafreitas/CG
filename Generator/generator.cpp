@@ -118,7 +118,84 @@ void fazEsfera(float raio,int slices,int stacks,char *file){
 	fclose(fp);
 }
 
+void generateCone(int radius, int height, int slices, int stacks, char* filePath){
+    float sliceAngle = (float) (M_PI) / slices;
+    float stackSize = (float) height / stacks;
+    float halfSize = (float) (height) / 2;
+    std::ofstream f(filePath);
+    //base
+    for(float a = 0; a < (2 * M_PI); a += sliceAngle){
+        float x1 = 0;
+        float y1 = halfSize;
+        float z1 = 0;
 
+        float x2 = (float) radius * sin(a + sliceAngle);
+        float y2 = halfSize;
+        float z2 =(float) radius * cos(a + sliceAngle);
+
+        float x3 = (float) radius * sin(a);
+        float y3 = halfSize;
+        float z3 = (float)radius * cos(a);
+
+        std::stringstream ss;
+        ss << x1; ss << ","; ss << y1; ss << ","; ss << z1; ss << '\n';
+        ss << x2; ss << ","; ss << y2; ss << ","; ss << z2; ss << '\n';
+        ss << x3; ss << ","; ss << y3; ss << ","; ss << z3; ss << '\n';
+
+        std::string s = ss.str();
+
+        f << s;
+
+    }
+    //altura
+    for(int i = 0; i<stacks; i++){
+        for(float a = 0; a < slices; a += sliceAngle){
+            float layer = halfSize + i * stackSize;
+            float layerAux = halfSize + (i + 1) * stackSize;
+
+            float radius1 = (float) radius - (radius * i) / stacks;
+            float radius2 = (float) radius - (radius * (i + 1)) / stacks;
+
+            float x4 = radius2 * sin(a);
+            float y4 = layerAux;
+            float z4 = radius2 * cos(a);
+
+            float x5 = radius1 * sin(a);
+            float y5 = layer;
+            float z5 = radius1 * cos(a);
+
+            float x6 = radius2 * sin(a + sliceAngle);
+            float y6 = layerAux;
+            float z6 = radius2 * cos(a + sliceAngle);
+
+            float x7 = radius1 * sin(a);
+            float y7 = layer;
+            float z7 = radius1 * cos(a);
+
+            float x8 = radius1 * sin(a + sliceAngle);
+            float y8 = layer;
+            float z8 = radius1 * cos(a + sliceAngle);
+
+            float x9 = radius2 * sin(a + sliceAngle);
+            float y9 = layerAux;
+            float z9 = radius2 * cos(a + sliceAngle);
+
+            std::stringstream ss;
+            ss << x4; ss << ","; ss << y4; ss << ","; ss << z4; ss << '\n';
+            ss << x5; ss << ","; ss << y5; ss << ","; ss << z5; ss << '\n';
+            ss << x6; ss << ","; ss << y6; ss << ","; ss << z6; ss << '\n';
+            ss << x7; ss << ","; ss << y7; ss << ","; ss << z7; ss << '\n';
+            ss << x8; ss << ","; ss << y8; ss << ","; ss << z8; ss << '\n';
+            ss << x9; ss << ","; ss << y9; ss << ","; ss << z9; ss << '\n';
+
+            std::string s = ss.str();
+            f << s;
+
+        }
+    }
+
+    f.close();
+}
 
 int main(int argc, char *argv[]) {//1-Raio_2-Slices_3-Stacks_4-File
 
