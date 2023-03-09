@@ -119,10 +119,10 @@ void sphere(float raio,int slices,int stacks,char *file){
 	fclose(fp);
 }
 
-void generateCone(int radius, int height, int slices, int stacks, char* filePath){
-    float sliceAngle = (float) (M_PI) / slices;
+void cone(int radius, int height, int slices, int stacks, char* filePath){
+    float sliceAngle = (float) (2 * M_PI) / slices;
     float stackSize = (float) height / stacks;
-    float halfSize = (float) (height) / 2;
+    float halfSize = (float) (-height) / 2;
     std::ofstream f(filePath);
     //base
     for(float a = 0; a < (2 * M_PI); a += sliceAngle){
@@ -144,13 +144,13 @@ void generateCone(int radius, int height, int slices, int stacks, char* filePath
         ss << x3; ss << ","; ss << y3; ss << ","; ss << z3; ss << '\n';
 
         std::string s = ss.str();
-
+        ss.clear();
         f << s;
 
     }
     //altura
     for(int i = 0; i<stacks; i++){
-        for(float a = 0; a < slices; a += sliceAngle){
+        for(float a = 0; a < (2 * M_PI); a += sliceAngle){
             float layer = halfSize + i * stackSize;
             float layerAux = halfSize + (i + 1) * stackSize;
 
@@ -190,6 +190,7 @@ void generateCone(int radius, int height, int slices, int stacks, char* filePath
             ss << x9; ss << ","; ss << y9; ss << ","; ss << z9; ss << '\n';
 
             std::string s = ss.str();
+            ss.clear();
             f << s;
 
         }
