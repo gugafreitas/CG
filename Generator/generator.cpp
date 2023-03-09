@@ -7,43 +7,44 @@
 #include <stdlib.h>
 
 //generator plane 1 3 plane.3d
-void plane(int lado, int divs, string nome){
-    ofstream file(nome); //cria um ficheiro, caso não exista, com o nome do parâmetro nome
-    float x,y,z;
-    y=0;
+void plane(int lado, int divs, char* nome){
+	FILE *fp = fopen(nome, "w");
+    float x,z,x1,z1,x2,z2,x3,z3,x4,z4;
+    float aresta = lado/divs;
 
-    //posicionamento do plano centrado com o eixo
-    if ((lado % 2) == 0){
-        x = (float)lado / 2;
-        z = (float)lado / 2;
+    x= -(lado/2);
+    z= -(lado/2);
+
+    for(int i=0;i<divs;i++){
+
+        for(int j=0;j<divs;j++){
+                
+            z1 = z + (i*aresta);
+            x1 = x + (j*aresta);
+
+            z2 = z1;
+            x2 = x1 + aresta;
+
+            z3 = z1 + aresta;
+            x3 = x1 + aresta;
+
+            z4 = z1 + aresta;
+            x4 = x1;
+
+            fprintf(fp,"%f,%d,%f\n",x1,0,z1);
+            fprintf(fp,"%f,%d,%f\n",x2,0,z2);
+            fprintf(fp,"%f,%d,%f\n",x3,0,z3);
+            fprintf(fp,"%f,%d,%f\n",x1,0,z1);
+            fprintf(fp,"%f,%d,%f\n",x3,0,z3);
+            fprintf(fp,"%f,%d,%f\n",x4,0,z4);
+        }
+
     }
-    else{
-        x = (float)lado / 2 + 0.5;
-        z = (float)lado / 2 + 0.5;
-    }
 
-    //Triangulo 1
-    printf("%f %f %f\n", x,y,z);
-        file << x << "," << y << "," << z << endl;
-    printf("%f %f %f\n", x,y,z);
-        file << x << "," << y << "," << -z << endl;
-    printf("%f %f %f\n", x,y,z);
-        file << -x << "," << y << "," << -z << endl;
-
-    
-    // Triangulo 2
-	printf("%f %f %f\n",-x,y,z);
-		file << -x << "," << y << "," << z << endl;
-	printf("%f %f %f\n",x,y,z);
-		file << x << "," << y << "," << z << endl;
-	printf("%f %f %f\n",-x,y,-z);
-		file << -x << "," << y << "," << -z << endl;
-
-
-	file.close();
+    fclose(fp);
 }
 
-void fazEsfera(float raio,int slices,int stacks,char *file){
+void sphere(float raio,int slices,int stacks,char *file){
 
 	FILE *fp = fopen(file, "w");
 
