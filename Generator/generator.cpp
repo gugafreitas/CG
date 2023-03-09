@@ -198,16 +198,40 @@ void generateCone(int radius, int height, int slices, int stacks, char* filePath
     f.close();
 }
 
-int main(int argc, char *argv[]) {//1-Raio_2-Slices_3-Stacks_4-File
 
-	if(argc == 5){
-		fazEsfera(atof(argv[1]), atoi(argv[2]), atoi(argv[3]),argv[4]);
-	}
-	else
-		printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+int main(int argc, char *argv[]) {
 
+    if(argv[1] == "sphere"){
+        if(argc == 6){
+		    sphere(atof(argv[2]), atoi(argv[3]), atoi(argv[4]),argv[5]);
+	    }
+	    else
+		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    }
+    else if(argv[1]=="plane"){
+        if(argc == 5){
+		    plane(atoi(argv[2]), atoi(argv[3]), argv[4]);
+	    }
+	    else
+		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    }
+    else if(argv[1]=="box"){
+        if(argc == 5){
+		    box(atoi(argv[2]), atoi(argv[3]), argv[4]);
+	    }
+	    else
+		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    }
+    else if(argv[1]=="cone"){
+        if(argc == 7){
+		    cone(atof(argv[2]),atof(argv[3]), atoi(argv[4]), atoi(argv[5]),argv[6]);
+	    }
+	    else
+		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    }
+    else{
+        printf("FIGURA NÃO IMPLEMENTADA");
+    }
 
 	return 1;
 }
-sphere.cpp
-3 KB
