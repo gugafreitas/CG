@@ -241,7 +241,7 @@ phase1_BINARY_DIR:STATIC=/Users/goncalofreitas/Desktop/CG/build
 phase1_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-phase1_SOURCE_DIR:STATIC=/Users/goncalofreitas/Desktop/CG
+phase1_SOURCE_DIR:STATIC=/Users/goncalofreitas/Desktop/CG/Engine
 
 
 ########################
@@ -322,7 +322,7 @@ CMAKE_GENERATOR_PLATFORM:INTERNAL=
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/Users/goncalofreitas/Desktop/CG
+CMAKE_HOME_DIRECTORY:INTERNAL=/Users/goncalofreitas/Desktop/CG/Engine
 //ADVANCED property for variable: CMAKE_INSTALL_NAME_TOOL
 CMAKE_INSTALL_NAME_TOOL-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER

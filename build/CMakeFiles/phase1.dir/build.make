@@ -53,7 +53,7 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG
+CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG/Engine
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /Users/goncalofreitas/Desktop/CG/build
@@ -69,31 +69,47 @@ include CMakeFiles/phase1.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/phase1.dir/flags.make
 
-CMakeFiles/phase1.dir/cone.cpp.o: CMakeFiles/phase1.dir/flags.make
-CMakeFiles/phase1.dir/cone.cpp.o: /Users/goncalofreitas/Desktop/CG/cone.cpp
-CMakeFiles/phase1.dir/cone.cpp.o: CMakeFiles/phase1.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/phase1.dir/cone.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/phase1.dir/cone.cpp.o -MF CMakeFiles/phase1.dir/cone.cpp.o.d -o CMakeFiles/phase1.dir/cone.cpp.o -c /Users/goncalofreitas/Desktop/CG/cone.cpp
+CMakeFiles/phase1.dir/engine.cpp.o: CMakeFiles/phase1.dir/flags.make
+CMakeFiles/phase1.dir/engine.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/engine.cpp
+CMakeFiles/phase1.dir/engine.cpp.o: CMakeFiles/phase1.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/phase1.dir/engine.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/phase1.dir/engine.cpp.o -MF CMakeFiles/phase1.dir/engine.cpp.o.d -o CMakeFiles/phase1.dir/engine.cpp.o -c /Users/goncalofreitas/Desktop/CG/Engine/engine.cpp
 
-CMakeFiles/phase1.dir/cone.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/phase1.dir/cone.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/goncalofreitas/Desktop/CG/cone.cpp > CMakeFiles/phase1.dir/cone.cpp.i
+CMakeFiles/phase1.dir/engine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/phase1.dir/engine.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/goncalofreitas/Desktop/CG/Engine/engine.cpp > CMakeFiles/phase1.dir/engine.cpp.i
 
-CMakeFiles/phase1.dir/cone.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/phase1.dir/cone.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/goncalofreitas/Desktop/CG/cone.cpp -o CMakeFiles/phase1.dir/cone.cpp.s
+CMakeFiles/phase1.dir/engine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/phase1.dir/engine.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/goncalofreitas/Desktop/CG/Engine/engine.cpp -o CMakeFiles/phase1.dir/engine.cpp.s
+
+CMakeFiles/phase1.dir/tinyxml2.cpp.o: CMakeFiles/phase1.dir/flags.make
+CMakeFiles/phase1.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp
+CMakeFiles/phase1.dir/tinyxml2.cpp.o: CMakeFiles/phase1.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/phase1.dir/tinyxml2.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/phase1.dir/tinyxml2.cpp.o -MF CMakeFiles/phase1.dir/tinyxml2.cpp.o.d -o CMakeFiles/phase1.dir/tinyxml2.cpp.o -c /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp
+
+CMakeFiles/phase1.dir/tinyxml2.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/phase1.dir/tinyxml2.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp > CMakeFiles/phase1.dir/tinyxml2.cpp.i
+
+CMakeFiles/phase1.dir/tinyxml2.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/phase1.dir/tinyxml2.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp -o CMakeFiles/phase1.dir/tinyxml2.cpp.s
 
 # Object files for target phase1
 phase1_OBJECTS = \
-"CMakeFiles/phase1.dir/cone.cpp.o"
+"CMakeFiles/phase1.dir/engine.cpp.o" \
+"CMakeFiles/phase1.dir/tinyxml2.cpp.o"
 
 # External object files for target phase1
 phase1_EXTERNAL_OBJECTS =
 
-phase1: CMakeFiles/phase1.dir/cone.cpp.o
+phase1: CMakeFiles/phase1.dir/engine.cpp.o
+phase1: CMakeFiles/phase1.dir/tinyxml2.cpp.o
 phase1: CMakeFiles/phase1.dir/build.make
 phase1: CMakeFiles/phase1.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable phase1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable phase1"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/phase1.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -105,6 +121,6 @@ CMakeFiles/phase1.dir/clean:
 .PHONY : CMakeFiles/phase1.dir/clean
 
 CMakeFiles/phase1.dir/depend:
-	cd /Users/goncalofreitas/Desktop/CG/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/goncalofreitas/Desktop/CG /Users/goncalofreitas/Desktop/CG /Users/goncalofreitas/Desktop/CG/build /Users/goncalofreitas/Desktop/CG/build /Users/goncalofreitas/Desktop/CG/build/CMakeFiles/phase1.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/goncalofreitas/Desktop/CG/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/goncalofreitas/Desktop/CG/Engine /Users/goncalofreitas/Desktop/CG/Engine /Users/goncalofreitas/Desktop/CG/build /Users/goncalofreitas/Desktop/CG/build /Users/goncalofreitas/Desktop/CG/build/CMakeFiles/phase1.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/phase1.dir/depend
 

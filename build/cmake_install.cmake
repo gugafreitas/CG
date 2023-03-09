@@ -1,4 +1,4 @@
-# Install script for directory: /Users/goncalofreitas/Desktop/CG
+# Install script for directory: /Users/goncalofreitas/Desktop/CG/Engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

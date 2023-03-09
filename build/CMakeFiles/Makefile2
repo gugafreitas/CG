@@ -54,7 +54,7 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG
+CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG/Engine
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /Users/goncalofreitas/Desktop/CG/build
@@ -81,12 +81,12 @@ clean: CMakeFiles/phase1.dir/clean
 CMakeFiles/phase1.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=1,2 "Built target phase1"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=1,2,3 "Built target phase1"
 .PHONY : CMakeFiles/phase1.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/phase1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/phase1.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 0
 .PHONY : CMakeFiles/phase1.dir/rule

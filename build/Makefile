@@ -57,7 +57,7 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG
+CMAKE_SOURCE_DIR = /Users/goncalofreitas/Desktop/CG/Engine
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /Users/goncalofreitas/Desktop/CG/build
@@ -129,29 +129,53 @@ phase1/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/build
 .PHONY : phase1/fast
 
-cone.o: cone.cpp.o
-.PHONY : cone.o
+engine.o: engine.cpp.o
+.PHONY : engine.o
 
 # target to build an object file
-cone.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/cone.cpp.o
-.PHONY : cone.cpp.o
+engine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/engine.cpp.o
+.PHONY : engine.cpp.o
 
-cone.i: cone.cpp.i
-.PHONY : cone.i
+engine.i: engine.cpp.i
+.PHONY : engine.i
 
 # target to preprocess a source file
-cone.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/cone.cpp.i
-.PHONY : cone.cpp.i
+engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/engine.cpp.i
+.PHONY : engine.cpp.i
 
-cone.s: cone.cpp.s
-.PHONY : cone.s
+engine.s: engine.cpp.s
+.PHONY : engine.s
 
 # target to generate assembly for a file
-cone.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/cone.cpp.s
-.PHONY : cone.cpp.s
+engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/engine.cpp.s
+.PHONY : engine.cpp.s
+
+tinyxml2.o: tinyxml2.cpp.o
+.PHONY : tinyxml2.o
+
+# target to build an object file
+tinyxml2.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/tinyxml2.cpp.o
+.PHONY : tinyxml2.cpp.o
+
+tinyxml2.i: tinyxml2.cpp.i
+.PHONY : tinyxml2.i
+
+# target to preprocess a source file
+tinyxml2.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/tinyxml2.cpp.i
+.PHONY : tinyxml2.cpp.i
+
+tinyxml2.s: tinyxml2.cpp.s
+.PHONY : tinyxml2.s
+
+# target to generate assembly for a file
+tinyxml2.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/tinyxml2.cpp.s
+.PHONY : tinyxml2.cpp.s
 
 # Help Target
 help:
@@ -162,9 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... phase1"
-	@echo "... cone.o"
-	@echo "... cone.i"
-	@echo "... cone.s"
+	@echo "... engine.o"
+	@echo "... engine.i"
+	@echo "... engine.s"
+	@echo "... tinyxml2.o"
+	@echo "... tinyxml2.i"
+	@echo "... tinyxml2.s"
 .PHONY : help
 
 

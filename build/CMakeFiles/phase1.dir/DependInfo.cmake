@@ -8,7 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/goncalofreitas/Desktop/CG/cone.cpp" "CMakeFiles/phase1.dir/cone.cpp.o" "gcc" "CMakeFiles/phase1.dir/cone.cpp.o.d"
+  "/Users/goncalofreitas/Desktop/CG/Engine/engine.cpp" "CMakeFiles/phase1.dir/engine.cpp.o" "gcc" "CMakeFiles/phase1.dir/engine.cpp.o.d"
+  "/Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp" "CMakeFiles/phase1.dir/tinyxml2.cpp.o" "gcc" "CMakeFiles/phase1.dir/tinyxml2.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

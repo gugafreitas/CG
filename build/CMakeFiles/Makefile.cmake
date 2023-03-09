@@ -34,7 +34,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CMake.app/Contents/share/cmake-3.26/Modules/Platform/Darwin.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.26/Modules/Platform/UnixPaths.cmake"
   "/Applications/CMake.app/Contents/share/cmake-3.26/Modules/SelectLibraryConfigurations.cmake"
-  "/Users/goncalofreitas/Desktop/CG/CMakeLists.txt"
+  "/Users/goncalofreitas/Desktop/CG/Engine/CMakeLists.txt"
   "CMakeFiles/3.26.0-rc2/CMakeCCompiler.cmake"
   "CMakeFiles/3.26.0-rc2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.26.0-rc2/CMakeSystem.cmake"
