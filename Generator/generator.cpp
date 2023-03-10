@@ -54,7 +54,7 @@ void plane(int lado, int divs, char* nome){
 void sphere(float raio,int slices,int stacks,char *file){
 
 	
-    std::ofstream f(file)
+    std::ofstream f(file);
     
 	float angBase = (2 * M_PI)/slices;
 
