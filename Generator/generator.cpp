@@ -3,12 +3,16 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
 #include <GL/glut.h>
 #include <stdlib.h>
 
 //generator plane 1 3 plane.3d
 void plane(int lado, int divs, char* nome){
-	FILE *fp = fopen(nome, "w");
+	//FILE *fp = fopen(nome, "w");
+    std::ofstream f(nome)
+    std::stringstream ss;
     float x,z,x1,z1,x2,z2,x3,z3,x4,z4;
     float aresta = lado/divs;
 
@@ -31,23 +35,28 @@ void plane(int lado, int divs, char* nome){
             z4 = z1 + aresta;
             x4 = x1;
 
-            fprintf(fp,"%f,%d,%f\n",x1,0,z1);
-            fprintf(fp,"%f,%d,%f\n",x2,0,z2);
-            fprintf(fp,"%f,%d,%f\n",x3,0,z3);
-            fprintf(fp,"%f,%d,%f\n",x1,0,z1);
-            fprintf(fp,"%f,%d,%f\n",x3,0,z3);
-            fprintf(fp,"%f,%d,%f\n",x4,0,z4);
+            ss << x1; ss << ","; ss << "0,"; ss << z1; ss << '\n';
+            ss << x2; ss << ","; ss << "0,"; ss << z2; ss << '\n';
+            ss << x3; ss << ","; ss << "0,"; ss << z3; ss << '\n';
+            ss << x1; ss << ","; ss << "0,"; ss << z1; ss << '\n';
+            ss << x3; ss << ","; ss << "0,"; ss << z3; ss << '\n';
+            ss << x4; ss << ","; ss << "0,"; ss << z4; ss << '\n';
+
+            std::string s = ss.str();
+            ss.clear();
+            f << s;
         }
 
     }
 
-    fclose(fp);
+    f.close();
 }
 
 void sphere(float raio,int slices,int stacks,char *file){
 
-	FILE *fp = fopen(file, "w");
-
+	//FILE *fp = fopen(file, "w");
+    std::ofstream f(file)
+    std::stringstream ss;
 	float angBase = (2 * M_PI)/slices;
 
 	float x1,z1,x2,z2,x3,z3,x4,z4;
@@ -77,13 +86,15 @@ void sphere(float raio,int slices,int stacks,char *file){
 			x4 = raio * cos(angStack) * sin((i+1)*angBase);
 			z4 = raio * cos(angStack) * cos((i+1)*angBase);
 
-			fprintf(fp,"%f,%f,%f\n",x1,yBase,z1);
-			fprintf(fp,"%f,%f,%f\n",x2,yAcima,z2);
-			fprintf(fp,"%f,%f,%f\n",x3,yBase,z3);
-			fprintf(fp,"%f,%f,%f\n",x3,yBase,z3);
-			fprintf(fp,"%f,%f,%f\n",x2,yAcima,z2);
-			fprintf(fp,"%f,%f,%f\n",x4,yAcima,z4);
-
+			ss << x1; ss << ","; ss << yBase; ss << ","; ss << z1; ss << '\n';
+			ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
+			ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
+			ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
+			ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
+			ss << x4; ss << ","; ss << yAcima; ss << ","; ss << z4; ss << '\n';
+            //std::string s = ss.str();
+            //ss.clear();
+            //f << s;
 		}
 		
 
@@ -108,15 +119,22 @@ void sphere(float raio,int slices,int stacks,char *file){
 			x4 = -raio * cos(angStack) * sin((i+1)*angBase);
 			z4 = -raio * cos(angStack) * cos((i+1)*angBase);
 
-			fprintf(fp,"%f,%f,%f\n",x1,yBase,z1);
-			fprintf(fp,"%f,%f,%f\n",x3,yBase,z3);
-			fprintf(fp,"%f,%f,%f\n",x2,yAcima,z2);			
-			fprintf(fp,"%f,%f,%f\n",x3,yBase,z3);
-			fprintf(fp,"%f,%f,%f\n",x4,yAcima,z4);
-			fprintf(fp,"%f,%f,%f\n",x2,yAcima,z2);
+            ss << x1; ss << ","; ss << yBase; ss << ","; ss << z1; ss << '\n';
+            ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
+            ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
+            ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
+            ss << x4; ss << ","; ss << yAcima; ss << ","; ss << z4; ss << '\n';
+            ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
+            //std::string s = ss.str();
+            //ss.clear();
+            //f << s;
 		}
 	}
-	fclose(fp);
+
+    std::string s = ss.str();
+    ss.clear();
+    f << s;
+	f.close()
 }
 
 void cone(int radius, int height, int slices, int stacks, char* filePath){
