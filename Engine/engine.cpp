@@ -86,7 +86,6 @@ void renderScene(void) {
 
 	for (int i = 0; i < vertices.size(); i++)
 		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-
 	glEnd();
 
 	// End of frame

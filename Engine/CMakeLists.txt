@@ -23,4 +23,4 @@ endif(NOT OPENGL_FOUND)
 
 add_executable(${PROJECT_NAME} engine.cpp tinyxml2.cpp)
 
-target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARY} )
+target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )

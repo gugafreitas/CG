@@ -5,10 +5,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <GL/glut.h>
 #include <stdlib.h>
 
-//generator plane 1 3 plane.3d
 void plane(int lado, int divs, char* nome){
     float x,z,x1,z1,x2,z2,x3,z3,x4,z4;
     float aresta = lado/divs;
@@ -175,31 +173,153 @@ void cone(int radius, int height, int slices, int stacks, char* filePath){
     f.close();
 }
 
+// void generateBox(double comp, double larg, double alt, int camadas, char *nome){
+// 	double x, y, z, xx, yy, zz; //variaveis que variam ao longo dos eixos
+// 	double espc, espl, espal; //espaçamento entre as camadas de comprimento, largura e 
+// 	int i, j; //variáveis que serão usadas nos ciclos
+// 	std::ofstream file(nome);
+
+// 	//Espaçamentos
+// 	espc = comp / camadas; 
+// 	espl = larg / camadas; 
+// 	espal = alt / camadas; 
+
+// 	/*
+// 	 * FACES DE CIMA E DE BAIXO
+// 	 */
+// 	y = alt / 2; yy = -y; //y é usado para indicar a altura da face de cima e yy é a altura a que a base de baixo se encontrará
+// 	z = larg / 2;		 //a variável z assume metade do valor da largura, ficando o poligono centrado no eixo do z
+
+// 	for (i = 0; i < camadas; i++){
+// 		x = -(comp / 2);  //a variável x assume metade do valor do comprimento, ficando o poligono centrado no eixo do x
+// 		xx = x + espc;   //incrementa também o xx, para andar sempre à frente do x, para fazer o triângulo
+//  		zz = z - espl;  //decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as camadas de largura
+// 		for (j = 0; j < camadas; j++){
+
+			
+// 			printf("%f %f %f\n", x, y, z); file <<  x << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, y, zz); file << x << "," << y << "," << zz << std::endl;
+			
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, y, zz); file << xx << "," << y << "," << zz << std::endl;
+// 			printf("%f %f %f\n", x, y, zz); file << x << "," << y << "," << zz << std::endl;
+
+// 			printf("%f %f %f\n", x, yy, z); file << x << "," << yy << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, yy, z); file << xx << "," << yy << "," << z << std::endl;
+			
+// 			printf("%f %f %f\n", xx, yy, z); file << xx << "," << yy << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, yy, zz); file << xx << "," << yy << "," << zz << std::endl;
+
+// 			x = x + espc;   //incrementa o x, sendo o x assumindo o valor na proxima camada
+// 			xx = xx + espc;//incrementa também o xx, para andar sempre à frente do x, para fazer o triângulo
+// 		}
+// 		z = z - espl;// z vai decrementando sempre o valor do espaçamento lateral, para ficar com as camadas certas na largura
+// 	}
+
+
+	
+// 	x = -(comp / 2); // face da esqueda
+// 	xx = -x; // face da direita
+// 	y = -(alt / 2);//a altura onde se iniciam as faces laterais
+
+// 	for (i = 0; i < camadas; i++){
+// 		z = larg / 2;    //a variável z assume metade do valor da largura, ficando o poligono centrado no eixo do z
+// 		zz = z - espl;  //decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as camadas de largura
+// 		yy = y + espal;//para o poligono ficar centrado, começamos com y negativo, sendo o seu valor metade da altura
+
+// 		for (j = 0; j < camadas; j++){
+			
+// 			printf("%f %f %f\n", x, y, z); file << x << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, z); file << x << "," << yy << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+
+// 			printf("%f %f %f\n", x, y, zz); file << x << "," << y << "," << zz << std::endl;
+// 			printf("%f %f %f\n", x, y, z); file << x << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+
+			
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, y, zz); file << xx << "," << y << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, yy, zz); file << xx << "," << yy << "," << zz << std::endl;
+
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, yy, zz); file << xx << "," << yy << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, yy, z); file << xx << "," << yy << "," << z << std::endl;
+
+// 			z = z - espl;   // z vai decrementando sempre o valor do espaçamento lateral, para ficar com as camadas certas na largura
+// 			zz = zz - espl;//decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as camadas de largura
+// 		}
+// 		y = y + espal;//incrementar na altura o valor do espaçamento, para obter nessa altura as camadas indicadas	
+// 	}
+
+	
+
+// 	z = larg / 2; //Face da frente
+// 	zz = -z; // Face trás
+// 	y = -(alt / 2); //altura que se inicia as camadas frente e trás
+
+// 	for (i = 0; i < camadas; i++){
+// 		x = -(comp / 2);  //valor da coordenada x, onde se começam a desenhar os triângulos
+// 		xx = x + espc;   //valor do x na proxima camada de comprimento
+// 		yy = y + espal; //valor do y na proxima camada de altura
+
+// 		for (j = 0; j < camadas; j++){
+			
+// 			printf("%f %f %f\n", x, y, z); file << x << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, z); file << x << "," << yy << "," << z << std::endl;
+
+// 			printf("%f %f %f\n", xx, y, z); file << xx << "," << y << "," << z << std::endl;
+// 			printf("%f %f %f\n", xx, yy, z); file << xx << "," << yy << "," << z << std::endl;
+// 			printf("%f %f %f\n", x, yy, z); file << x << "," << yy << "," << z << std::endl;
+
+// 			printf("%f %f %f\n", x, y, zz); file << x << "," << y << "," << zz << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, y, zz); file << xx << "," << y << "," << zz << std::endl;
+
+// 			printf("%f %f %f\n", xx, y, zz); file << xx << "," << y << "," << zz << std::endl;
+// 			printf("%f %f %f\n", x, yy, zz); file << x << "," << yy << "," << zz << std::endl;
+// 			printf("%f %f %f\n", xx, yy, zz); file << xx << "," << yy << "," << zz << std::endl;
+
+// 			x = x + espc;    //x vai incrementando o valor do espaçamento do comprimento, para ficar com as camadas indicadas
+// 			xx = xx + espc; //xx também incrementa o valor do espaçamento do comprimento, para ficar sempre na proxima camada no eixo do x	
+// 		}
+// 		y = y + espal; //incrementar na altura o valor do espaçamento, para obter nessa altura as camadas indicadas	
+// 	}
+// 	file.close();
+// }
+
+// void box(float sideLength, int divisions) {
+//     generateBox(sideLength, sideLength, sideLength, divisions);
+// }
 
 int main(int argc, char *argv[]) {
 
-    if(argv[1] == "sphere"){
+    if(strcmp(argv[1],"sphere")==0){
         if(argc == 6){
 		    sphere(atof(argv[2]), atoi(argv[3]), atoi(argv[4]),argv[5]);
 	    }
 	    else
 		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
     }
-    else if(argv[1]=="plane"){
+    else if(strcmp(argv[1],"plane")==0){
         if(argc == 5){
 		    plane(atoi(argv[2]), atoi(argv[3]), argv[4]);
 	    }
 	    else
 		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
     }
-    else if(argv[1]=="box"){
-        if(argc == 5){
-		    box(atoi(argv[2]), atoi(argv[3]), argv[4]);
-	    }
-	    else
-		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
-    }
-    else if(argv[1]=="cone"){
+    // else if(strcmp(argv[1],"box")==0){
+    //     if(argc == 5){
+	// 	    box(atoi(argv[2]), atoi(argv[3]), argv[4]);
+	//     }
+	//     else
+	// 	    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    // }
+    else if(strcmp(argv[1],"cone")==0){
         if(argc == 7){
 		    cone(atof(argv[2]),atof(argv[3]), atoi(argv[4]), atoi(argv[5]),argv[6]);
 	    }
