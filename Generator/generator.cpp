@@ -51,89 +51,48 @@ void plane(int lado, int divs, char* nome){
     f.close();
 }
 
-void sphere(float raio,int slices,int stacks,char *file){
+void sphere(float raio, int slices, int stacks, char* file) {
 
-	
     std::ofstream f(file);
-    
-	float angBase = (2 * M_PI)/slices;
 
-	float x1,z1,x2,z2,x3,z3,x4,z4;
+    float angBase = (2*M_PI)/slices;
+    float angAltura = M_PI/stacks;
 
-	float yBase=0;
-	float yAcima=0;
-	float yAux=0;
-	float angStack = 0;
+    float x1,x2,x3,x4,y1,y2,y3,y4,z1,z2,z3,z4=0;
 
-	for(int j=1;j<=stacks;j++){
-		yAux = yAcima;
-		angStack = j * (M_PI / stacks);
+    for (int i=0;i<stacks;i++) {
 
-		for(int i =0;i<slices;i++){
-			yBase = yAux;
-			yAcima = raio * sin(angStack);
-			x1 = raio * sin(i*angBase);
-			z1 = raio * cos(i*angBase);
-			
+        for (int j=0;j<slices;j++){
 
-			x2 = raio * cos(angStack) * sin(i*angBase);
-			z2 = raio * cos(angStack) * cos(i*angBase);
+        x1 = raio * sin(i*angAltura) * sin(j*angBase);
+        y1 = raio * cos(i*angAltura);
+        z1 = raio * sin(i*angAltura) * cos(j*angBase);
 
-			x3 = raio * sin((i+1)*angBase);
-			z3 = raio * cos((i+1)*angBase);
+        x2 = raio * sin((i+1)*angAltura) * sin((j+1)*angBase);
+        y2 = raio * cos((i+1)*angAltura);
+        z2 = raio * sin((i+1)*angAltura) * cos((j+1)*angBase);
 
-			x4 = raio * cos(angStack) * sin((i+1)*angBase);
-			z4 = raio * cos(angStack) * cos((i+1)*angBase);
-			
-			std::stringstream ss;
-			ss << x1; ss << ","; ss << yBase; ss << ","; ss << z1; ss << '\n';
-			ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
-			ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
-			ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
-			ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
-			ss << x4; ss << ","; ss << yAcima; ss << ","; ss << z4; ss << '\n';
-            		std::string s = ss.str();
-            		ss.clear();
-            		f << s;
-		}
-		
+        x3 = raio * sin((i+1)*angAltura) * sin(j*angBase);
+        y3 = raio * cos((i+1)*angAltura);
+        z3 = raio * sin((i+1)*angAltura) * cos(j*angBase);
 
-	}
-	for(int j=1;j<=stacks;j++){
-		yAux = yAcima;
-		angStack = j * (M_PI / stacks);
+        x4 = raio * sin(i*angAltura) * sin((j+1)*angBase);
+        y4 = raio * cos(i*angAltura);
+        z4 = raio * sin(i*angAltura) * cos((j+1)*angBase);
 
-		for(int i =0;i<slices;i++){
-			yBase = yAux;
-			yAcima = -raio * sin(angStack);
-			x1 = -raio * sin(i*angBase);
-			z1 = -raio * cos(i*angBase);
-			
-
-			x2 = -raio * cos(angStack) * sin(i*angBase);
-			z2 = -raio * cos(angStack) * cos(i*angBase);
-
-			x3 = -raio * sin((i+1)*angBase);
-			z3 = -raio * cos((i+1)*angBase);
-
-			x4 = -raio * cos(angStack) * sin((i+1)*angBase);
-			z4 = -raio * cos(angStack) * cos((i+1)*angBase);
-
-            std::stringstream ss;
-	    ss << x1; ss << ","; ss << yBase; ss << ","; ss << z1; ss << '\n';
-            ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
-            ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
-            ss << x3; ss << ","; ss << yBase; ss << ","; ss << z3; ss << '\n';
-            ss << x4; ss << ","; ss << yAcima; ss << ","; ss << z4; ss << '\n';
-            ss << x2; ss << ","; ss << yAcima; ss << ","; ss << z2; ss << '\n';
-            
-	    std::string s = ss.str();
-            ss.clear();
-            f << s;
-		}
-	}
-	
-	f.close()
+        std::stringstream ss;
+        ss << x1; ss << ","; ss << y1; ss << ","; ss << z1; ss << '\n';
+        ss << x2; ss << ","; ss << y2; ss << ","; ss << z2; ss << '\n';
+        ss << x3; ss << ","; ss << y3; ss << ","; ss << z3; ss << '\n';
+        ss << x1; ss << ","; ss << y1; ss << ","; ss << z1; ss << '\n';
+        ss << x4; ss << ","; ss << y4; ss << ","; ss << z4; ss << '\n';
+        ss << x2; ss << ","; ss << y2; ss << ","; ss << z2; ss << '\n';
+        std::string s = ss.str();
+        ss.clear();
+        f << s;
+        }        
+    }
+    f.close();
 }
 
 void cone(int radius, int height, int slices, int stacks, char* filePath){
