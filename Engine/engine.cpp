@@ -156,17 +156,6 @@ void lerXML(string ficheiro) {
 		XMLElement* root = docxml.FirstChildElement();
 		for(XMLElement *elemento = root -> FirstChildElement();elemento != NULL; elemento = elemento -> NextSiblingElement()){
 			string fich = elemento -> Attribute("file");
-			settings.window_width = elemento -> Attribute("width");
-			settings.window_height = elemento -> Attribute("height");
-			settings.camera_position_x = elemento -> Attribute("x");
-			settings.camera_position_y = elemento -> Attribute("y");
-			settings.camera_position_z = elemento -> Attribute("z");
-			settings.camera_lookAt_x = elemento -> Attribute("x");
-			settings.camera_lookAt_y = elemento -> Attribute("y");
-			settings.camera_lookAt_z = elemento -> Attribute("z");
-			settings.camera_up_x = elemento -> Attribute("x");
-			settings.camera_up_y = elemento -> Attribute("y");
-			settings.camera_up_z = elemento -> Attribute("z");
 			cout << "Ficheiro: " << fich << " lido com sucesso " << endl;
 			lerficheiro(fich);
 		}		
@@ -175,6 +164,33 @@ void lerXML(string ficheiro) {
 		cout << "Ficheiro XML não foi encontrado" << endl;
 	}
 }
+
+// void lerXML(string ficheiro) {
+// 	XMLDocument docxml;
+
+// 	if (!(docxml.LoadFile(ficheiro.c_str()))) {
+// 		XMLElement* root = docxml.FirstChildElement();
+// 		for(XMLElement *elemento = root -> FirstChildElement();elemento != NULL; elemento = elemento -> NextSiblingElement()){
+// 			string fich = elemento -> Attribute("file");
+// 			settings.window_width = elemento -> Attribute("width");
+// 			settings.window_height = elemento -> Attribute("height");
+// 			settings.camera_position_x = elemento -> Attribute("x");
+// 			settings.camera_position_y = elemento -> Attribute("y");
+// 			settings.camera_position_z = elemento -> Attribute("z");
+// 			settings.camera_lookAt_x = elemento -> Attribute("x");
+// 			settings.camera_lookAt_y = elemento -> Attribute("y");
+// 			settings.camera_lookAt_z = elemento -> Attribute("z");
+// 			settings.camera_up_x = elemento -> Attribute("x");
+// 			settings.camera_up_y = elemento -> Attribute("y");
+// 			settings.camera_up_z = elemento -> Attribute("z");
+// 			cout << "Ficheiro: " << fich << " lido com sucesso " << endl;
+// 			lerficheiro(fich);
+// 		}		
+// 	}
+// 	else {
+// 		cout << "Ficheiro XML não foi encontrado" << endl;
+// 	}
+// }
 
 // void lerXML(string arquivo) {
 //     XMLElement doc;
@@ -188,6 +204,8 @@ void lerXML(string ficheiro) {
 //         XMLElement* window = world->FirstChildElement("window");
 //         if (window) {
 //             window->QueryFloatAttribute("width", &settings.window_width);
+// 			float print = settings.window_width;
+// 			printf("%f", print);
 //             window->QueryFloatAttribute("height", &settings.window_height);
 //             std::cout << "Tamanho da janela: " << settings.window_width << " x " << settings.window_height << std::endl;
 //         }
@@ -233,9 +251,6 @@ void lerXML(string ficheiro) {
 //     }
 //     //doc.Clear();
 // }
-
-
-
 
 
 int main(int argc, char **argv) {
