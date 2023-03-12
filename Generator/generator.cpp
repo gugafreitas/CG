@@ -184,9 +184,9 @@ void cone(int radius, int height, int slices, int stacks, char* filePath){
 }
 
 void box(double sideLength, int divisions, char *nome){
-	double x, y, z, xx, yy, zz; //variaveis que variam ao longo dos eixos
-	double espc, espl, espal; //espaçamento entre as divisions de sideLengthrimento, sideLengthura e 
-	int i, j; //variáveis que serão usadas nos ciclos
+	double x, y, z, xx, yy, zz;
+	double espc, espl, espal; 
+	int i, j; 
 	std::ofstream file(nome);
 
 	//Espaçamentos
@@ -197,13 +197,13 @@ void box(double sideLength, int divisions, char *nome){
 	/*
 	 * FACES DE CIMA E DE BAIXO
 	 */
-	y = sideLength / 2; yy = -y; //y é usado para indicar a sideLengthura da face de cima e yy é a sideLengthura a que a base de baixo se encontrará
-	z = sideLength / 2;		 //a variável z assume metade do valor da sideLengthura, ficando o poligono centrado no eixo do z
+	y = sideLength / 2; yy = -y;
+	z = sideLength / 2;
 
 	for (i = 0; i < divisions; i++){
-		x = -(sideLength / 2);  //a variável x assume metade do valor do sideLengthrimento, ficando o poligono centrado no eixo do x
-		xx = x + espc;   //incrementa também o xx, para andar sempre à frente do x, para fazer o triângulo
- 		zz = z - espl;  //decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as divisions de sideLengthura
+		x = -(sideLength / 2);
+		xx = x + espc;
+ 		zz = z - espl;
 		for (j = 0; j < divisions; j++){
 
 			
@@ -223,22 +223,22 @@ void box(double sideLength, int divisions, char *nome){
 			file << x << "," << yy << "," << zz << std::endl;
 			file << xx << "," << yy << "," << zz << std::endl;
 
-			x = x + espc;   //incrementa o x, sendo o x assumindo o valor na proxima camada
-			xx = xx + espc;//incrementa também o xx, para andar sempre à frente do x, para fazer o triângulo
+			x = x + espc;
+			xx = xx + espc;
 		}
-		z = z - espl;// z vai decrementando sempre o valor do espaçamento lateral, para ficar com as divisions certas na sideLengthura
+		z = z - espl;
 	}
 
 
 	
-	x = -(sideLength / 2); // face da esqueda
-	xx = -x; // face da direita
-	y = -(sideLength / 2);//a sideLengthura onde se iniciam as faces laterais
+	x = -(sideLength / 2);
+	xx = -x;
+	y = -(sideLength / 2);
 
 	for (i = 0; i < divisions; i++){
-		z = sideLength / 2;    //a variável z assume metade do valor da sideLengthura, ficando o poligono centrado no eixo do z
-		zz = z - espl;  //decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as divisions de sideLengthura
-		yy = y + espal;//para o poligono ficar centrado, começamos com y negativo, sendo o seu valor metade da sideLengthura
+		z = sideLength / 2;   
+		zz = z - espl;  
+		yy = y + espal;
 
 		for (j = 0; j < divisions; j++){
 			
@@ -259,22 +259,22 @@ void box(double sideLength, int divisions, char *nome){
 			file << xx << "," << yy << "," << zz << std::endl;
 			file << xx << "," << yy << "," << z << std::endl;
 
-			z = z - espl;   // z vai decrementando sempre o valor do espaçamento lateral, para ficar com as divisions certas na sideLengthura
-			zz = zz - espl;//decrementa o z, pois temos o z com o seu valor maximo positivo e para o plano ficar centrado temos que ir tirando o espaçamento entre as divisions de sideLengthura
+			z = z - espl;
+			zz = zz - espl;
 		}
-		y = y + espal;//incrementar na sideLengthura o valor do espaçamento, para obter nessa sideLengthura as divisions indicadas	
+		y = y + espal;	
 	}
 
 	
 
-	z = sideLength / 2; //Face da frente
-	zz = -z; // Face trás
-	y = -(sideLength / 2); //sideLengthura que se inicia as divisions frente e trás
+	z = sideLength / 2;
+	zz = -z;
+	y = -(sideLength / 2);
 
 	for (i = 0; i < divisions; i++){
-		x = -(sideLength / 2);  //valor da coordenada x, onde se começam a desenhar os triângulos
-		xx = x + espc;   //valor do x na proxima camada de sideLengthrimento
-		yy = y + espal; //valor do y na proxima camada de sideLengthura
+		x = -(sideLength / 2);
+		xx = x + espc;
+		yy = y + espal;
 
 		for (j = 0; j < divisions; j++){
 			
@@ -294,10 +294,10 @@ void box(double sideLength, int divisions, char *nome){
 			file << x << "," << yy << "," << zz << std::endl;
 			file << xx << "," << yy << "," << zz << std::endl;
 
-			x = x + espc;    //x vai incrementando o valor do espaçamento do sideLengthrimento, para ficar com as divisions indicadas
-			xx = xx + espc; //xx também incrementa o valor do espaçamento do sideLengthrimento, para ficar sempre na proxima camada no eixo do x	
+			x = x + espc;
+			xx = xx + espc;
 		}
-		y = y + espal; //incrementar na sideLengthura o valor do espaçamento, para obter nessa sideLengthura as divisions indicadas	
+		y = y + espal;
 	}
 	file.close();
 }
