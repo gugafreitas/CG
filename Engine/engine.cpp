@@ -14,28 +14,84 @@
 #include <iostream>
 #include <vector>
 
-struct Ponto
-{
-    double x;
-    double y;
-    double z;
-};
+#include "engine.h"
 
-struct xml
-{
-	float window_width;
-	float window_height;
-	float camera_position_x;
-	float camera_position_y;
-	float camera_position_z;
-	float camera_lookAt_x;
-	float camera_lookAt_y;
-	float camera_lookAt_z;
-	float camera_up_x;
-	float camera_up_y;
-	float camera_up_z;
-} settings;
+using namespace tinyxml2;
 
+struct World {
+    int windowWidth;
+    int windowHeight;
+    float cameraPosX;
+    float cameraPosY;
+    float cameraPosZ;
+    float cameraLookAtX;
+    float cameraLookAtY;
+    float cameraLookAtZ;
+    float cameraUpX;
+    float cameraUpY;
+    float cameraUpZ;
+    float cameraFov;
+    float cameraNear;
+    float cameraFar;
+    std::vector<std::string> modelFiles;
+}xml;
+
+void lerXML(string ficheiro) {
+    XMLDocument doc;
+    if (doc.LoadFile(fileName.c_str()) != XML_SUCCESS) {
+        std::cerr << "Error loading XML file: " << doc.GetErrorStr1() << std::endl;
+        return;
+    }
+
+    XMLElement* root = doc.RootElement();
+
+    XMLElement* windowElem = root->FirstChildElement("window");
+    if (windowElem) {
+        windowElem->QueryIntAttribute("width", &world.windowWidth);
+        windowElem->QueryIntAttribute("height", &world.windowHeight);
+    }
+
+    XMLElement* cameraElem = root->FirstChildElement("camera");
+    if (cameraElem) {
+        XMLElement* posElem = cameraElem->FirstChildElement("position");
+        if (posElem) {
+            posElem->QueryFloatAttribute("x", &world.cameraPosX);
+            posElem->QueryFloatAttribute("y", &world.cameraPosY);
+            posElem->QueryFloatAttribute("z", &world.cameraPosZ);
+        }
+
+        XMLElement* lookAtElem = cameraElem->FirstChildElement("lookAt");
+        if (lookAtElem) {
+            lookAtElem->QueryFloatAttribute("x", &world.cameraLookAtX);
+            lookAtElem->QueryFloatAttribute("y", &world.cameraLookAtY);
+            lookAtElem->QueryFloatAttribute("z", &world.cameraLookAtZ);
+        }
+
+        XMLElement* upElem = cameraElem->FirstChildElement("up");
+        if (upElem) {
+            upElem->QueryFloatAttribute("x", &world.cameraUpX);
+            upElem->QueryFloatAttribute("y", &world.cameraUpY);
+            upElem->QueryFloatAttribute("z", &world.cameraUpZ);
+        }
+
+        XMLElement* projElem = cameraElem->FirstChildElement("projection");
+        if (projElem) {
+            projElem->QueryFloatAttribute("fov", &world.cameraFov);
+            projElem->QueryFloatAttribute("near", &world.cameraNear);
+            projElem->QueryFloatAttribute("far", &world.cameraFar);
+        }
+    }
+
+    XMLElement* sceneElem = root->FirstChildElement("group")->FirstChildElement("scene");
+    if (sceneElem) {
+        for (XMLElement* modelElem = sceneElem->FirstChildElement("model"); modelElem != NULL; modelElem = modelElem->NextSiblingElement("model")) {
+            const char* file = modelElem->Attribute("file");
+            if (file) {
+                world.modelFiles.push_back(file);
+            }
+        }
+    }
+}
 
 using namespace tinyxml2;
 using namespace std;
@@ -84,9 +140,9 @@ void renderScene(void) {
 	glLoadIdentity();
 	
 
-	gluLookAt(zx,zy,zz,
+	gluLookAt(xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
 		      0.0,0.0,0.0,
-			  0.0f,1.0f,0.0f);
+			  xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
    
 
 	// put drawing instructions here
@@ -148,23 +204,7 @@ void lerficheiro(string ficheiro) {
 	}
 }
 
-// Leitura do ficheiro XML
-void lerXML(string ficheiro) {
-	XMLDocument docxml;
-
-	if (!(docxml.LoadFile(ficheiro.c_str()))) {
-		XMLElement* root = docxml.FirstChildElement();
-		for(XMLElement *elemento = root -> FirstChildElement();elemento != NULL; elemento = elemento -> NextSiblingElement()){
-			string fich = elemento -> Attribute("file");
-			cout << "Ficheiro: " << fich << " lido com sucesso " << endl;
-			lerficheiro(fich);
-		}		
-	}
-	else {
-		cout << "Ficheiro XML não foi encontrado" << endl;
-	}
-}
-
+// // Leitura do ficheiro XML
 // void lerXML(string ficheiro) {
 // 	XMLDocument docxml;
 
@@ -172,17 +212,6 @@ void lerXML(string ficheiro) {
 // 		XMLElement* root = docxml.FirstChildElement();
 // 		for(XMLElement *elemento = root -> FirstChildElement();elemento != NULL; elemento = elemento -> NextSiblingElement()){
 // 			string fich = elemento -> Attribute("file");
-// 			settings.window_width = elemento -> Attribute("width");
-// 			settings.window_height = elemento -> Attribute("height");
-// 			settings.camera_position_x = elemento -> Attribute("x");
-// 			settings.camera_position_y = elemento -> Attribute("y");
-// 			settings.camera_position_z = elemento -> Attribute("z");
-// 			settings.camera_lookAt_x = elemento -> Attribute("x");
-// 			settings.camera_lookAt_y = elemento -> Attribute("y");
-// 			settings.camera_lookAt_z = elemento -> Attribute("z");
-// 			settings.camera_up_x = elemento -> Attribute("x");
-// 			settings.camera_up_y = elemento -> Attribute("y");
-// 			settings.camera_up_z = elemento -> Attribute("z");
 // 			cout << "Ficheiro: " << fich << " lido com sucesso " << endl;
 // 			lerficheiro(fich);
 // 		}		
@@ -192,65 +221,7 @@ void lerXML(string ficheiro) {
 // 	}
 // }
 
-// void lerXML(string arquivo) {
-//     XMLElement doc;
-//     if (!doc.LoadFile("arquivo.xml")) {
-//         std::cerr << "Erro ao abrir o arquivo XML." << std::endl;
-//         return;
-//     }
 
-//     XMLElement* world = doc.FirstChildElement("world");
-//     if (world) {
-//         XMLElement* window = world->FirstChildElement("window");
-//         if (window) {
-//             window->QueryFloatAttribute("width", &settings.window_width);
-// 			float print = settings.window_width;
-// 			printf("%f", print);
-//             window->QueryFloatAttribute("height", &settings.window_height);
-//             std::cout << "Tamanho da janela: " << settings.window_width << " x " << settings.window_height << std::endl;
-//         }
-//         XMLElement* camera = world->FirstChildElement("camera");
-//         if (camera) {
-//             XMLElement* position = camera->FirstChildElement("position");
-//             if (position) {
-//                 position->QueryFloatAttribute("x", &settings.camera_position_x);
-//                 position->QueryFloatAttribute("y", &settings.camera_position_y);
-//                 position->QueryFloatAttribute("z", &settings.camera_position_z);
-//                 std::cout << "Posicao da camera: (" << settings.camera_position_x << ", " << settings.camera_position_y << ", " << settings.camera_position_z << ")" << std::endl;
-//             }
-//             XMLElement* lookAt = camera->FirstChildElement("lookAt");
-//             if (lookAt) {
-//                 lookAt->QueryFloatAttribute("x", &settings.camera_lookAt_x);
-//                 lookAt->QueryFloatAttribute("y", &settings.camera_lookAt_y);
-//                 lookAt->QueryFloatAttribute("z", &settings.camera_lookAt_z);
-// 				std::cout << "LookAt da camera: (" << settings.camera_lookAt_x << ", " << settings.camera_lookAt_y << ", " << settings.camera_lookAt_z << ")" << std::endl;
-//             }
-//             XMLElement* up = camera->FirstChildElement("up");
-//             if (up) {
-//                 float x, y, z;
-//                 up->QueryFloatAttribute("x", &settings.camera_up_x);
-//                 up->QueryFloatAttribute("y", &settings.camera_up_y);
-//                 up->QueryFloatAttribute("z", &settings.camera_up_z);
-//                 std::cout << "Vetor Up da camera: (" << settings.camera_up_x << ", " << settings.camera_up_y << ", " << settings.camera_up_z << ")" << std::endl;
-//             }
-//         }
-//         XMLElement* group = world->FirstChildElement("group");
-//         if (group) {
-//             XMLElement* scene = group->FirstChildElement("scene");
-//             if (scene) {
-//                 XMLElement* model = scene->FirstChildElement("model");
-//                 while (model) {
-//                     const char* filename = model->Attribute("file");
-//                     if (filename) {
-//                         std::cout << "Modelo: " << filename << std::endl;
-//                     }
-//                     model = model->NextSiblingElement("model");
-//                 }
-//             }
-//         }
-//     }
-//     //doc.Clear();
-// }
 
 
 int main(int argc, char **argv) {
@@ -269,7 +240,6 @@ int main(int argc, char **argv) {
 
 
 	// put callback registration here
-
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
     
