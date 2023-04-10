@@ -6,17 +6,33 @@
 
 #include <math.h>
 #include "tinyxml2.h"
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fstream>
 #include <string>
 #include <iostream>
 #include <vector>
-
-#include "engine.h"
+#include <string.h>
 
 using namespace tinyxml2;
+using namespace std;
+
+struct Ponto
+{
+    double x;
+    double y;
+    double z;
+};
+
+float R = 1, G = 1, B = 1;
+float size;
+float a = 1, w = 1;
+float camX = 0, camY = 0, camZ = 0;
+float zx = 6, zy = 6, zz = 6;
+int xinicio, yinicio , tracking = 0;
+int k = 5 , alpha = 0 , beta = 0;
+vector<Ponto> vertices; //vetor com os pontos lidos do ficheiro
+int linha = GL_LINE;
 
 struct World {
     int windowWidth;
@@ -38,7 +54,7 @@ struct World {
 
 void lerXML(string ficheiro) {
     XMLDocument doc;
-    if (doc.LoadFile(fileName.c_str()) != XML_SUCCESS) {
+    if (doc.LoadFile(ficheiro.c_str()) != XML_SUCCESS) {
         std::cerr << "Error loading XML file: " << doc.GetErrorStr1() << std::endl;
         return;
     }
@@ -47,38 +63,38 @@ void lerXML(string ficheiro) {
 
     XMLElement* windowElem = root->FirstChildElement("window");
     if (windowElem) {
-        windowElem->QueryIntAttribute("width", &world.windowWidth);
-        windowElem->QueryIntAttribute("height", &world.windowHeight);
+        windowElem->QueryIntAttribute("width", &xml.windowWidth);
+        windowElem->QueryIntAttribute("height", &xml.windowHeight);
     }
 
     XMLElement* cameraElem = root->FirstChildElement("camera");
     if (cameraElem) {
         XMLElement* posElem = cameraElem->FirstChildElement("position");
         if (posElem) {
-            posElem->QueryFloatAttribute("x", &world.cameraPosX);
-            posElem->QueryFloatAttribute("y", &world.cameraPosY);
-            posElem->QueryFloatAttribute("z", &world.cameraPosZ);
+            posElem->QueryFloatAttribute("x", &xml.cameraPosX);
+            posElem->QueryFloatAttribute("y", &xml.cameraPosY);
+            posElem->QueryFloatAttribute("z", &xml.cameraPosZ);
         }
 
         XMLElement* lookAtElem = cameraElem->FirstChildElement("lookAt");
         if (lookAtElem) {
-            lookAtElem->QueryFloatAttribute("x", &world.cameraLookAtX);
-            lookAtElem->QueryFloatAttribute("y", &world.cameraLookAtY);
-            lookAtElem->QueryFloatAttribute("z", &world.cameraLookAtZ);
+            lookAtElem->QueryFloatAttribute("x", &xml.cameraLookAtX);
+            lookAtElem->QueryFloatAttribute("y", &xml.cameraLookAtY);
+            lookAtElem->QueryFloatAttribute("z", &xml.cameraLookAtZ);
         }
 
         XMLElement* upElem = cameraElem->FirstChildElement("up");
         if (upElem) {
-            upElem->QueryFloatAttribute("x", &world.cameraUpX);
-            upElem->QueryFloatAttribute("y", &world.cameraUpY);
-            upElem->QueryFloatAttribute("z", &world.cameraUpZ);
+            upElem->QueryFloatAttribute("x", &xml.cameraUpX);
+            upElem->QueryFloatAttribute("y", &xml.cameraUpY);
+            upElem->QueryFloatAttribute("z", &xml.cameraUpZ);
         }
 
         XMLElement* projElem = cameraElem->FirstChildElement("projection");
         if (projElem) {
-            projElem->QueryFloatAttribute("fov", &world.cameraFov);
-            projElem->QueryFloatAttribute("near", &world.cameraNear);
-            projElem->QueryFloatAttribute("far", &world.cameraFar);
+            projElem->QueryFloatAttribute("fov", &xml.cameraFov);
+            projElem->QueryFloatAttribute("near", &xml.cameraNear);
+            projElem->QueryFloatAttribute("far", &xml.cameraFar);
         }
     }
 
@@ -87,24 +103,55 @@ void lerXML(string ficheiro) {
         for (XMLElement* modelElem = sceneElem->FirstChildElement("model"); modelElem != NULL; modelElem = modelElem->NextSiblingElement("model")) {
             const char* file = modelElem->Attribute("file");
             if (file) {
-                world.modelFiles.push_back(file);
+                xml.modelFiles.push_back(file);
             }
         }
     }
 }
 
-using namespace tinyxml2;
-using namespace std;
 
-float R = 1, G = 1, B = 1;
-float size;
-float a = 1, w = 1;
-float camX = 0, camY = 0, camZ = 0;
-float zx = 6, zy = 6, zz = 6;
-int xinicio, yinicio , tracking = 0;
-int k = 5 , alpha = 0 , beta = 0;
-vector<Ponto> vertices; //vetor com os pontos lidos do ficheiro
-int linha = GL_LINE;
+
+// int leitura3D(string ficheiro){
+
+//     FILE * fp;
+//     char * line = NULL;
+//     size_t len = 0;
+//     ssize_t read;
+
+//     double list[3];
+
+//     fp = fopen(xml.modelFiles, "r");
+//     if (fp == NULL)
+//         exit(EXIT_FAILURE);
+
+//     while ((read = getline(&line, &len, fp)) != -1) {
+//         char * token = strtok(line, ",");
+//         int i = 0;
+
+//         while( token != NULL ) {
+//               float x = atof(token);
+//             list[i] = x;
+//             i++;
+//               token = strtok(NULL, ",");
+//            }
+
+//         //dar list à função que desenha triangulos
+        
+//         /*
+//         for(int i=0;i<3;i++){
+//             printf("%f,",list[i]);
+//         }
+//         printf("\n");
+//         */
+        
+//     }
+
+//     fclose(fp);
+//     if (line)
+//         free(line);
+//     exit(EXIT_SUCCESS);
+
+// }
 
 void changeSize(int w, int h) {
 
@@ -140,9 +187,9 @@ void renderScene(void) {
 	glLoadIdentity();
 	
 
-	gluLookAt(xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
-		      0.0,0.0,0.0,
-			  xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
+	gluLookAt(xml.cameraPosX,xml.cameraPosY,xml.cameraPosZ,
+            xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
+			xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
    
 
 	// put drawing instructions here
@@ -151,14 +198,54 @@ void renderScene(void) {
     glRotatef(a,0,1,0);
     glRotatef(w,1,0,0);
 
+    FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    double list[3];
+    printf("OLA\n");
+    fp = fopen("cone.3d", "r");
+    printf("OLAAAA234\n");
+    if (fp == NULL){
+        printf("OLAAAA234\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("OLAAAA234\n");
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        char * token = strtok(line, ",");
+        int i = 0;
+        printf("OLAAAAAA\n");
+
+        while( token != NULL ) {
+              float x = atof(token);
+            list[i] = x;
+            i++;
+              token = strtok(NULL, ",");
+        }
+        glBegin(GL_TRIANGLES);
+        glColor3f(R,G,B);
+        glVertex3f(list[0],list[1],list[2]);
+        glEnd();
+        printf("OLAAAAAA\n");
+    }
+
+    fclose(fp);
+
+    printf("OLAAAAAA\n");
+
+	// glBegin(GL_TRIANGLES);
+	// glColor3f(R,G,B);
+
+    // leitura3D(xml.modelFiles)
 
 
-	glBegin(GL_TRIANGLES);
-	glColor3f(R,G,B);
 
-	for (int i = 0; i < vertices.size(); i++)
-		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-	glEnd();
+	// for (int i = 0; i < vertices.size(); i++)
+	// 	glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+	// glEnd();
 
 	// End of frame
 	glutSwapBuffers();

@@ -8,10 +8,10 @@
     </camera>
     <group>
         <scene>
-	        <model file='../Engine/sphere.3d'/>
-            <model file='../Engine/cone.3d'/>
+	        <model file='../Engine/cone.3d'/>
+            <!-- <model file='../Engine/sphere.3d'/>
             <model file='../Engine/plane.3d'/>
-            <model file='../Engine/box.3d'/>
+            <model file='../Engine/box.3d'/> -->
         </scene>
     </group>
 </world>
