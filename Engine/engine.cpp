@@ -33,6 +33,7 @@ int xinicio, yinicio , tracking = 0;
 int k = 5 , alpha = 0 , beta = 0;
 vector<Ponto> vertices; //vetor com os pontos lidos do ficheiro
 int linha = GL_LINE;
+int nOfFiles;
 
 struct World {
     int windowWidth;
@@ -103,7 +104,9 @@ void lerXML(string ficheiro) {
         for (XMLElement* modelElem = sceneElem->FirstChildElement("model"); modelElem != NULL; modelElem = modelElem->NextSiblingElement("model")) {
             const char* file = modelElem->Attribute("file");
             if (file) {
-                xml.modelFiles.push_back(file);
+                string aux = file;
+                xml.modelFiles.push_back(aux);
+                nOfFiles++;
             }
         }
     }
@@ -111,47 +114,46 @@ void lerXML(string ficheiro) {
 
 
 
-// int leitura3D(string ficheiro){
+void lerficheiro(std::string fileP) {
+    printf("%s\n", fileP.c_str());
+	string linha,token,delimiter = ",";
+	int pos;
+	double a,b,c;
+	Ponto p;
 
-//     FILE * fp;
-//     char * line = NULL;
-//     size_t len = 0;
-//     ssize_t read;
 
-//     double list[3];
+	ifstream file(fileP);
+	if (file.is_open()){
 
-//     fp = fopen(xml.modelFiles, "r");
-//     if (fp == NULL)
-//         exit(EXIT_FAILURE);
+		while(getline(file,linha)){
 
-//     while ((read = getline(&line, &len, fp)) != -1) {
-//         char * token = strtok(line, ",");
-//         int i = 0;
+			pos = linha.find(delimiter);
+			token = linha.substr(0,pos);
+			a = atof(token.c_str());
+			linha.erase(0,pos + delimiter.length());
+			p.x = a;
 
-//         while( token != NULL ) {
-//               float x = atof(token);
-//             list[i] = x;
-//             i++;
-//               token = strtok(NULL, ",");
-//            }
+			pos = linha.find(delimiter);
+			token = linha.substr(0,pos);
+			b = atof(token.c_str());
+			linha.erase(0,pos + delimiter.length());
+			p.y = b;
 
-//         //dar list à função que desenha triangulos
-        
-//         /*
-//         for(int i=0;i<3;i++){
-//             printf("%f,",list[i]);
-//         }
-//         printf("\n");
-//         */
-        
-//     }
+			pos = linha.find(delimiter);
+			token = linha.substr(0, pos);
+			c = atof(token.c_str());
+			linha.erase(0, pos + delimiter.length());
+			p.z = c;
 
-//     fclose(fp);
-//     if (line)
-//         free(line);
-//     exit(EXIT_SUCCESS);
-
-// }
+			//cout << p.x << " " << p.y << " " << p.z << endl;
+			vertices.push_back(p);
+		}
+		file.close();			
+	}
+	else {
+		cout << "ERRO AO LER O FICHEIRO" << endl;
+	}
+}
 
 void changeSize(int w, int h) {
 
@@ -197,141 +199,56 @@ void renderScene(void) {
     glTranslatef(camX,camY,camZ);
     glRotatef(a,0,1,0);
     glRotatef(w,1,0,0);
-
-    FILE * fp;
-    char * line = NULL;
-    size_t len = 0;
-    ssize_t read;
-
-    double list[3];
-    printf("OLA\n");
-    fp = fopen("cone.3d", "r");
-    printf("OLAAAA234\n");
-    if (fp == NULL){
-        printf("OLAAAA234\n");
-        exit(EXIT_FAILURE);
+    printf("vou desenhar\n");
+	
+    glBegin(GL_TRIANGLES);
+    glColor3f(R,G,B);
+    printf("cor\n");
+    printf("%d\n", vertices.size());
+    for (int i = 0; i < vertices.size(); i++){
+        printf("aaaaaaa\n");
+        glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
     }
-
-    printf("OLAAAA234\n");
-
-    while ((read = getline(&line, &len, fp)) != -1) {
-        char * token = strtok(line, ",");
-        int i = 0;
-        printf("OLAAAAAA\n");
-
-        while( token != NULL ) {
-              float x = atof(token);
-            list[i] = x;
-            i++;
-              token = strtok(NULL, ",");
-        }
-        glBegin(GL_TRIANGLES);
-        glColor3f(R,G,B);
-        glVertex3f(list[0],list[1],list[2]);
-        glEnd();
-        printf("OLAAAAAA\n");
-    }
-
-    fclose(fp);
-
-    printf("OLAAAAAA\n");
-
-	// glBegin(GL_TRIANGLES);
-	// glColor3f(R,G,B);
-
-    // leitura3D(xml.modelFiles)
-
-
-
-	// for (int i = 0; i < vertices.size(); i++)
-	// 	glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-	// glEnd();
+	glEnd();
 
 	// End of frame
 	glutSwapBuffers();
 }
 
-void lerficheiro(string ficheiro) {
-
-	string linha,token,delimiter = ",";
-	int pos;
-	double a,b,c;
-	Ponto p;
-
-	ifstream file(ficheiro);
-	if (file.is_open()){
-
-		while(getline(file,linha)){
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0,pos);
-			a = atof(token.c_str());
-			linha.erase(0,pos + delimiter.length());
-			p.x = a;
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0,pos);
-			b = atof(token.c_str());
-			linha.erase(0,pos + delimiter.length());
-			p.y = b;
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0, pos);
-			c = atof(token.c_str());
-			linha.erase(0, pos + delimiter.length());
-			p.z = c;
-
-			//cout << p.x << " " << p.y << " " << p.z << endl;
-			vertices.push_back(p);
-		}
-		file.close();			
-	}
-	else {
-		cout << "ERRO AO LER O FICHEIRO" << endl;
-	}
+void clearVector(vector<Ponto> v){
+    int aux = vertices.size();
+    for (int i = 0; i < aux; i++){
+        v.pop_back();
+    }
 }
-
-// // Leitura do ficheiro XML
-// void lerXML(string ficheiro) {
-// 	XMLDocument docxml;
-
-// 	if (!(docxml.LoadFile(ficheiro.c_str()))) {
-// 		XMLElement* root = docxml.FirstChildElement();
-// 		for(XMLElement *elemento = root -> FirstChildElement();elemento != NULL; elemento = elemento -> NextSiblingElement()){
-// 			string fich = elemento -> Attribute("file");
-// 			cout << "Ficheiro: " << fich << " lido com sucesso " << endl;
-// 			lerficheiro(fich);
-// 		}		
-// 	}
-// 	else {
-// 		cout << "Ficheiro XML não foi encontrado" << endl;
-// 	}
-// }
-
-
-
 
 int main(int argc, char **argv) {
 
     if(argc > 1){
 		lerXML(argv[1]);
 	}
+    printf("1\n");
 
-	// put GLUT init here
-
+    // put GLUT init here
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
-    glutInitWindowSize(800,800);
-    glutCreateWindow("Projeto_de_CG"); 
+    glutInitWindowSize(xml.windowWidth,xml.windowHeight);
 
-
-	// put callback registration here
-    glutDisplayFunc(renderScene);
-    glutReshapeFunc(changeSize);
-    
+    for(int i = 0; i < nOfFiles; i++){
+        printf("2\n");
+        lerficheiro(xml.modelFiles[i]);
+        glutCreateWindow(xml.modelFiles[i].c_str());
+        // put callback registration here
+        // string x = (xml.modelFiles).toString();
+        printf("3\n");
+        glutDisplayFunc(renderScene);
+        printf("4\n");
+        glutReshapeFunc(changeSize);
+        printf("%d\n",vertices.size());
+        clearVector(vertices);
+    }
 	// OpenGL settings
-
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	
