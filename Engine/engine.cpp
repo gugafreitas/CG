@@ -115,12 +115,10 @@ void lerXML(string ficheiro) {
 
 
 void lerficheiro(std::string fileP) {
-    printf("%s\n", fileP.c_str());
 	string linha,token,delimiter = ",";
 	int pos;
 	double a,b,c;
 	Ponto p;
-
 
 	ifstream file(fileP);
 	if (file.is_open()){
@@ -192,21 +190,16 @@ void renderScene(void) {
 	gluLookAt(xml.cameraPosX,xml.cameraPosY,xml.cameraPosZ,
             xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
 			xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
-   
 
 	// put drawing instructions here
     glPolygonMode(GL_FRONT_AND_BACK,linha);
     glTranslatef(camX,camY,camZ);
     glRotatef(a,0,1,0);
     glRotatef(w,1,0,0);
-    printf("vou desenhar\n");
 	
     glBegin(GL_TRIANGLES);
     glColor3f(R,G,B);
-    printf("cor\n");
-    printf("%d\n", vertices.size());
     for (int i = 0; i < vertices.size(); i++){
-        printf("aaaaaaa\n");
         glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
     }
 	glEnd();
@@ -215,19 +208,13 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
-void clearVector(vector<Ponto> v){
-    int aux = vertices.size();
-    for (int i = 0; i < aux; i++){
-        v.pop_back();
-    }
-}
+
 
 int main(int argc, char **argv) {
 
     if(argc > 1){
 		lerXML(argv[1]);
 	}
-    printf("1\n");
 
     // put GLUT init here
     glutInit(&argc, argv);
@@ -235,19 +222,12 @@ int main(int argc, char **argv) {
     glutInitWindowPosition(100,100);
     glutInitWindowSize(xml.windowWidth,xml.windowHeight);
 
-    for(int i = 0; i < nOfFiles; i++){
-        printf("2\n");
-        lerficheiro(xml.modelFiles[i]);
-        glutCreateWindow(xml.modelFiles[i].c_str());
-        // put callback registration here
-        // string x = (xml.modelFiles).toString();
-        printf("3\n");
-        glutDisplayFunc(renderScene);
-        printf("4\n");
-        glutReshapeFunc(changeSize);
-        printf("%d\n",vertices.size());
-        clearVector(vertices);
-    }
+    lerficheiro(xml.modelFiles[xml.modelFiles.size() - 1].c_str());
+    glutCreateWindow(xml.modelFiles[xml.modelFiles.size() - 1].c_str());
+    
+    // put callback registration here
+    glutDisplayFunc(renderScene);
+    glutReshapeFunc(changeSize);    
 	// OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
