@@ -269,7 +269,7 @@ void lerficheiro(std::string fileP) {
 	string linha,token,delimiter = ",";
 	int pos;
 	double a,b,c;
-	Ponto p;
+	extern Ponto p;
 
 	ifstream file(fileP);
 	if (file.is_open()){
@@ -309,7 +309,7 @@ void readGrupo(Figure* figure, XMLElement* elementoXml) {
 
 	int linhaTrans = -1, linhaRot = -1, linhaScale = -1;
 	XMLElement* elementoAux = elementoXml->FirstChildElement("transform");
-	Transformacao tAux;
+	extern Transformacao tAux;
 	XMLElement* translacaoElemento = elementoAux->FirstChildElement("translate");
 	if (translacaoElemento != nullptr) {
 
@@ -395,7 +395,7 @@ void readGrupo(Figure* figure, XMLElement* elementoXml) {
 
 	while (filhos != nullptr) {
 
-		Figure filho = *new Figure();
+		extern Figure filho;
 		readGrupo(&filho, filhos);
 		(*figure).addFigura(filho);
 
@@ -410,7 +410,7 @@ void lerXML(string ficheiro) {
 
 		XMLElement* elemento = doc.FirstChildElement("world")->FirstChildElement("group");    //pega no elemento world do xml
 		while (elemento != nullptr) {                  //avança até ser null
-			Figure f;
+			extern Figure f;
 			readGrupo(&f, elemento);
 			xml.models.push_back(f);
 			elemento = elemento->NextSiblingElement();     //avança para o proximo
