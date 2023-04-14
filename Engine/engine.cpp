@@ -4,6 +4,9 @@
 #include <GL/glut.h>
 #endif
 
+#define GL_SILENCE_DEPRECATION
+#include <OpenGL/gl.h>
+
 #include <math.h>
 #include "tinyxml2.h"
 #include <stdio.h>
@@ -94,7 +97,6 @@ void lerXML(string ficheiro) {
             projElem->QueryFloatAttribute("far", &xml.cameraFar);
         }
     }
-
 
     XMLElement* groupElem = root->FirstChildElement("group");
     while(groupElem){

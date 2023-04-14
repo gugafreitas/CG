@@ -1,3 +1,5 @@
+#pragma once
+
 class Color{
     float c1;
     float c2;

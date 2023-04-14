@@ -1,3 +1,5 @@
+#pragma once
+
 class Ponto{
     float x;
     float y;
