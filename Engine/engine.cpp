@@ -264,7 +264,7 @@ void drawFigures() {
 		drawFigure(xml.models[i]);
 	}
 }
-
+/*
 void lerficheiro(std::string fileP) {
 	string linha,token,delimiter = ",";
 	int pos;
@@ -303,19 +303,16 @@ void lerficheiro(std::string fileP) {
 		cout << "ERRO AO LER O FICHEIRO" << endl;
 	}
 }
+*/
+Figure readGrupo(XMLElement* grupoXML) {
 
-void readGrupo(Figure* figure, XMLElement* elementoXml) {
+	Figure resF;
+	XMLElement* transformAux = grupoXML->FirstChildElement("transform");
 
-
-	int linhaTrans = -1, linhaRot = -1, linhaScale = -1;
-	XMLElement* elementoAux = elementoXml->FirstChildElement("transform");
-	extern Transformacao tAux;
-	XMLElement* translacaoElemento = elementoAux->FirstChildElement("translate");
+	Transformacao tAux;
+	XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
+	
 	if (translacaoElemento != nullptr) {
-
-		//cout << "translate" << endl;
-		linhaTrans = translacaoElemento->GetLineNum();
-
 		float x = 0, y = 0, z = 0;
 		if (translacaoElemento->Attribute("x") != nullptr) {
 			x = stof(translacaoElemento->Attribute("x"));
@@ -332,11 +329,8 @@ void readGrupo(Figure* figure, XMLElement* elementoXml) {
 	}
 
 
-	XMLElement* rotacaoElemento = elementoAux->FirstChildElement("rotate");
+	XMLElement* rotacaoElemento = transformAux->FirstChildElement("rotate");
 	if (rotacaoElemento != nullptr) {
-
-		linhaRot = rotacaoElemento->GetLineNum();
-
 		float angulo = 0, x = 0, y = 0, z = 0;
 		if (rotacaoElemento->Attribute("angle") != nullptr) {
 			angulo = stof(rotacaoElemento->Attribute("angle"));
@@ -357,50 +351,45 @@ void readGrupo(Figure* figure, XMLElement* elementoXml) {
 	}
 
 
-	XMLElement* escaloElemento = elementoAux->FirstChildElement("scale");
-	if (escaloElemento != nullptr) {
-
-		linhaScale = escaloElemento->GetLineNum();
-
+	XMLElement* escalaElemento = transformAux->FirstChildElement("scale");
+	if (escalaElemento != nullptr) {
 		float x = 0, y = 0, z = 0;
-		if (escaloElemento->Attribute("x") != nullptr) {
-			x = stof(escaloElemento->Attribute("x"));
+		if (escalaElemento->Attribute("x") != nullptr) {
+			x = stof(escalaElemento->Attribute("x"));
 		}
-		if (escaloElemento->Attribute("y") != nullptr) {
-			y = stof(escaloElemento->Attribute("y"));
+		if (escalaElemento->Attribute("y") != nullptr) {
+			y = stof(escalaElemento->Attribute("y"));
 		}
-		if (escaloElemento->Attribute("z") != nullptr) {
-			z = stof(escaloElemento->Attribute("z"));
+		if (escalaElemento->Attribute("z") != nullptr) {
+			z = stof(escalaElemento->Attribute("z"));
 		}
 		
 		tAux.setEscalaX(x);
 		tAux.setEscalaY(y);
 		tAux.setEscalaZ(z);
 	}
-	(*figure).setTransform(tAux);
+	resF.setTransform(tAux);
 
-	XMLElement* modelosXML = elementoXml->FirstChildElement("models");
+	XMLElement* modelosXML = grupoXML->FirstChildElement("models");
 
 	if (modelosXML != nullptr) {
 			XMLElement* modelElem = modelosXML->FirstChildElement("model");
             while(modelElem){
 				string filePath;
                 filePath = modelElem->Attribute("file");
-                (*figure).addModelFile(filePath);
+                resF.addModelFile(filePath);
 				modelElem = modelElem->NextSiblingElement();
             }
 	}
 	
-	XMLElement* filhos = elementoXml->FirstChildElement("group");
+	XMLElement* filhos = grupoXML->FirstChildElement("group");
 
-	while (filhos != nullptr) {
-
-		extern Figure filho;
-		readGrupo(&filho, filhos);
-		(*figure).addFigura(filho);
-
+	while(filhos != nullptr) {
+		Figure filho = readGrupo(filhos);
+		resF.addFigura(filho);
 		filhos = filhos->NextSiblingElement();
 	}
+	return resF;
 }
 
 void lerXML(string ficheiro) {
@@ -411,7 +400,7 @@ void lerXML(string ficheiro) {
 		XMLElement* elemento = doc.FirstChildElement("world")->FirstChildElement("group");    //pega no elemento world do xml
 		while (elemento != nullptr) {                  //avança até ser null
 			extern Figure f;
-			readGrupo(&f, elemento);
+			readGrupo(f, elemento);
 			xml.models.push_back(f);
 			elemento = elemento->NextSiblingElement();     //avança para o proximo
 		}
@@ -454,6 +443,13 @@ void lerXML(string ficheiro) {
                 projElem->QueryFloatAttribute("far", &xml.cameraFar);
             }
         }
+
+		XMLElement* grupoElem = root->FirstChildElement("group");
+		while(grupoElem != nullptr){
+			Figure fig = readGrupo(grupoElem);
+			xml.models.push_back(fig);
+			grupoElem = grupoElem->NextSibling();
+		}
 	}
 
 	else {
