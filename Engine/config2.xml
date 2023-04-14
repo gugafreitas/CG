@@ -10,8 +10,8 @@
         <!-- SOL -->
         <group>
             <transform>
-                <!-- <scale x="1.0" y="1.0" z="1.0" />
-                <translate x="4" y="0" z="0" /> -->
+                <translate x="4" y="0" z="0" />
+                <scale x="1.0" y="1.0" z="1.0" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -21,8 +21,8 @@
         <!-- MERCÚRIO -->
         <group>
             <transform>
-                <scale x="0.1" y="0.1" z="0.1" /> 
                 <translate x="10.0" y="0" z="0"/>
+                <scale x="0.1" y="0.1" z="0.1" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -32,8 +32,8 @@
         <!-- VÉNUS -->
         <group>
             <transform>
-                <scale x="0.12" y="0.12" z="0.12" />
                 <translate x="20.0" y="0" z="0"/>
+                <scale x="0.12" y="0.12" z="0.12" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -43,8 +43,8 @@
         <!-- TERRA -->
         <group>
             <transform>
-                <scale x="0.15" y="0.15" z="0.15" />
                 <translate x="30.0" y="0" z="0"/>
+                <scale x="0.15" y="0.15" z="0.15" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -53,8 +53,8 @@
                 <!-- LUA -->
                 <group>
                     <transform>
-                        <scale x="0.05" y="0.05" z="0.05" />
                         <translate x="3" y="3" z="3"/>
+                        <scale x="0.05" y="0.05" z="0.05" />
                     </transform>
                     <models>
                         <model file="sphere.3d" />
@@ -65,8 +65,8 @@
         <!-- MARTE -->
         <group>
             <transform>
-                <scale x="0.11" y="0.11" z="0.11" />
                 <translate x="55.0" y="0" z="0"/>
+                <scale x="0.11" y="0.11" z="0.11" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -76,8 +76,8 @@
         <!-- JÚPITER -->
         <group>
             <transform>
-                <scale x="0.4" y="0.4" z="0.4" />
                 <translate x="70.0" y="0" z="0"/>
+                <scale x="0.4" y="0.4" z="0.4" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -87,8 +87,8 @@
         <!-- SATURNO -->
         <group>
             <transform>
-                <scale x="0.33" y="0.33" z="0.33" />
                 <translate x="90.0" y="0" z="0"/>
+                <scale x="0.33" y="0.33" z="0.33" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -98,8 +98,8 @@
         <!-- URANO -->
         <group>
             <transform>
-                <scale x="0.2" y="0.2" z="0.2" />
                 <translate x="105.0" y="0" z="0"/>
+                <scale x="0.2" y="0.2" z="0.2" />
             </transform>
             <models>
                 <model file="sphere.3d" />
@@ -109,8 +109,8 @@
         <!-- NEPTUNO -->
         <group>
             <transform>
-                <scale x="0.22" y="0.22" z="0.22" />
                 <translate x="125.0" y="0" z="0"/>
+                <scale x="0.22" y="0.22" z="0.22" />
             </transform>
             <models>
                 <model file="sphere.3d" />

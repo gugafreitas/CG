@@ -5,7 +5,7 @@ Figure::Figure(){
     //color = Color::Color();
     figuras = vector<Figure>();
     modelFiles = vector<string>();
-    transformacoes = Transformacao;
+    transformacoes = Transformacao::Transformacao();
 }
 
 Figure::Figure(vector<Ponto> a, vector<string> b, vector<Figure> c, Transformacao d){
