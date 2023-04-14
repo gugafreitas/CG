@@ -1,12 +1,11 @@
-
-class Escala{
+class Ponto{
     float x;
     float y;
     float z;
 
     public:
-        Escala();
-        Escala(float,float,float);
+        Ponto();
+        Ponto(float,float,float);
 
         float getX()
         {return x;}
@@ -22,6 +21,5 @@ class Escala{
         {return z;}
         void setZ(float a)
         {z=a;}
-
 
 };

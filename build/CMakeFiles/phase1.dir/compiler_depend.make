@@ -432,7 +432,10 @@ CMakeFiles/phase1.dir/engine.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/engi
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__split_buffer \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iomanip \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iostream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/vector
+  /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/vector \
+  /Users/goncalofreitas/Desktop/CG/Engine/figure.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/ponto.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/transformacao.h
 
 CMakeFiles/phase1.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp \
   /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.h \
@@ -551,6 +554,10 @@ CMakeFiles/phase1.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/ti
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/cstdarg \
   /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include/stdarg.h
 
+
+/Users/goncalofreitas/Desktop/CG/Engine/transformacao.h:
+
+/Users/goncalofreitas/Desktop/CG/Engine/ponto.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__split_buffer:
 
@@ -1037,6 +1044,8 @@ CMakeFiles/phase1.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/ti
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/xlocale/_string.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/_types/_uint8_t.h:
+
+/Users/goncalofreitas/Desktop/CG/Engine/figure.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/limits:
 

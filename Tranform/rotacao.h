@@ -24,4 +24,17 @@ class Rotacao{
         void setEz(float a)
         {ez=a;}
 
+        float getAngle()
+        {return angle;}
+        void setAngle(float a)
+        {angle=a;}
+
+        void addR(Rotacao a)
+        {
+            this->ex += a.getEx();
+            this->ey += a.getEy();
+            this->ez += a.getEz();
+            this->angle += a.getAngle();
+        }
+
 };

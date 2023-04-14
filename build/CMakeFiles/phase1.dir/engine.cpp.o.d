@@ -430,4 +430,7 @@ CMakeFiles/phase1.dir/engine.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__split_buffer \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iomanip \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iostream \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/vector
+  /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/vector \
+  /Users/goncalofreitas/Desktop/CG/Engine/figure.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/ponto.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/transformacao.h

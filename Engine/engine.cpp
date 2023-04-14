@@ -13,16 +13,12 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
+#include "figure.h"
+
 
 using namespace tinyxml2;
 using namespace std;
 
-struct Ponto
-{
-    double x;
-    double y;
-    double z;
-};
 
 float R = 1, G = 1, B = 1;
 float size;
@@ -50,7 +46,7 @@ struct World {
     float cameraFov;
     float cameraNear;
     float cameraFar;
-    std::vector<std::string> modelFiles;
+    vector<Figure> models;
 }xml;
 
 void lerXML(string ficheiro) {
@@ -71,7 +67,7 @@ void lerXML(string ficheiro) {
     XMLElement* cameraElem = root->FirstChildElement("camera");
     if (cameraElem) {
         XMLElement* posElem = cameraElem->FirstChildElement("position");
-        if (posElem) {
+        if (posElem){
             posElem->QueryFloatAttribute("x", &xml.cameraPosX);
             posElem->QueryFloatAttribute("y", &xml.cameraPosY);
             posElem->QueryFloatAttribute("z", &xml.cameraPosZ);
@@ -99,20 +95,121 @@ void lerXML(string ficheiro) {
         }
     }
 
-    XMLElement* sceneElem = root->FirstChildElement("group")->FirstChildElement("scene");
-    if (sceneElem) {
-        for (XMLElement* modelElem = sceneElem->FirstChildElement("model"); modelElem != NULL; modelElem = modelElem->NextSiblingElement("model")) {
-            const char* file = modelElem->Attribute("file");
-            if (file) {
-                string aux = file;
-                xml.modelFiles.push_back(aux);
-                nOfFiles++;
+
+    XMLElement* groupElem = root->FirstChildElement("group");
+    while(groupElem){
+        Figure figAux;
+        XMLElement* transformElem = root->FirstChildElement("transform");
+        if(transformElem){
+            XMLElement* scaleElem = transformElem->FirstChildElement("scale");
+            Transformacao auxT;
+            if(scaleElem){
+                float xe, ye, ze;
+                scaleElem->QueryFloatAttribute("x", &xe);
+                scaleElem->QueryFloatAttribute("y", &ye);
+                scaleElem->QueryFloatAttribute("z", &ze);
+
+                auxT.setEscalaX(xe);
+                auxT.setEscalaY(ye);
+                auxT.setEscalaZ(ze);
+            }
+
+            XMLElement* translateElem = transformElem->FirstChildElement("translate");
+            if(translateElem){
+                float xt, yt, zt;
+                translateElem->QueryFloatAttribute("x", &xt);
+                translateElem->QueryFloatAttribute("y", &yt);
+                translateElem->QueryFloatAttribute("z", &zt);
+
+                auxT.setTranslacaoX(xt);
+                auxT.setTranslacaoY(yt);
+                auxT.setTranslacaoZ(zt);
+            }
+
+            XMLElement* rotateElem = transformElem->FirstChildElement("rotate");
+            if(rotateElem){
+                float xr, yr, zr, ar;
+                rotateElem->QueryFloatAttribute("x", &xr);
+                rotateElem->QueryFloatAttribute("y", &yr);
+                rotateElem->QueryFloatAttribute("z", &zr);
+                rotateElem->QueryFloatAttribute("angle", &ar);
+
+                auxT.setRotacaoAngle(ar);
+                auxT.setRotacaoX(xr);
+                auxT.setRotacaoY(yr);
+                auxT.setRotacaoZ(zr);
+            }
+            figAux.setTransform(auxT);
+        }
+
+        XMLElement* modelsElem = root->FirstChildElement("models");
+        if(modelsElem){
+            XMLElement* modelElem = modelsElem->FirstChildElement("model");
+            while(modelElem){
+                string filePath = modelElem->Attribute("file");
+                figAux.addModelFile(filePath);
             }
         }
+
+        XMLElement* groupElem1 = root->FirstChildElement("group");
+        while(groupElem1){
+            Figure figAux1;
+            XMLElement* transformElem1 = root->FirstChildElement("transform");
+            if(transformElem1){
+                XMLElement* scaleElem1 = transformElem1->FirstChildElement("scale");
+                Transformacao auxT1;
+                if(scaleElem1){
+                    float xe, ye, ze;
+                    scaleElem1->QueryFloatAttribute("x", &xe);
+                    scaleElem1->QueryFloatAttribute("y", &ye);
+                    scaleElem1->QueryFloatAttribute("z", &ze);
+
+                    auxT1.setEscalaX(xe);
+                    auxT1.setEscalaY(ye);
+                    auxT1.setEscalaZ(ze);
+                }
+
+                XMLElement* translateElem1 = transformElem1->FirstChildElement("translate");
+                if(translateElem1){
+                    float xt, yt, zt;
+                    translateElem1->QueryFloatAttribute("x", &xt);
+                    translateElem1->QueryFloatAttribute("y", &yt);
+                    translateElem1->QueryFloatAttribute("z", &zt);
+
+                    auxT1.setTranslacaoX(xt);
+                    auxT1.setTranslacaoY(yt);
+                    auxT1.setTranslacaoZ(zt);
+                }
+
+                XMLElement* rotateElem1 = transformElem1->FirstChildElement("rotate");
+                if(rotateElem1){
+                    float xr, yr, zr, ar;
+                    rotateElem1->QueryFloatAttribute("x", &xr);
+                    rotateElem1->QueryFloatAttribute("y", &yr);
+                    rotateElem1->QueryFloatAttribute("z", &zr);
+                    rotateElem1->QueryFloatAttribute("angle", &ar);
+
+                    auxT1.setRotacaoAngle(ar);
+                    auxT1.setRotacaoX(xr);
+                    auxT1.setRotacaoY(yr);
+                    auxT1.setRotacaoZ(zr);
+                }
+                figAux1.setTransform(auxT1);
+            }
+
+            XMLElement* modelsElem1 = root->FirstChildElement("models");
+            if(modelsElem1){
+                XMLElement* modelElem1 = modelsElem1->FirstChildElement("model");
+                while(modelElem1){
+                    string filePath = modelElem1->Attribute("file");
+                    figAux1.addModelFile(filePath);
+                }
+            }
+            figAux.addFigura(figAux1);
+        }
+        xml.models.push_back(figAux);
     }
 }
-
-
 
 void lerficheiro(std::string fileP) {
 	string linha,token,delimiter = ",";
@@ -129,19 +226,19 @@ void lerficheiro(std::string fileP) {
 			token = linha.substr(0,pos);
 			a = atof(token.c_str());
 			linha.erase(0,pos + delimiter.length());
-			p.x = a;
+			p.setX(a);
 
 			pos = linha.find(delimiter);
 			token = linha.substr(0,pos);
 			b = atof(token.c_str());
 			linha.erase(0,pos + delimiter.length());
-			p.y = b;
+			p.setY(b);
 
 			pos = linha.find(delimiter);
 			token = linha.substr(0, pos);
 			c = atof(token.c_str());
 			linha.erase(0, pos + delimiter.length());
-			p.z = c;
+			p.setZ(c);
 
 			//cout << p.x << " " << p.y << " " << p.z << endl;
 			vertices.push_back(p);
@@ -200,7 +297,7 @@ void renderScene(void) {
     glBegin(GL_TRIANGLES);
     glColor3f(R,G,B);
     for (int i = 0; i < vertices.size(); i++){
-        glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+        glVertex3f(vertices[i].getX(), vertices[i].getY(), vertices[i].getZ());
     }
 	glEnd();
 
@@ -222,12 +319,17 @@ int main(int argc, char **argv) {
     glutInitWindowPosition(100,100);
     glutInitWindowSize(xml.windowWidth,xml.windowHeight);
 
-    lerficheiro(xml.modelFiles[xml.modelFiles.size() - 1].c_str());
-    glutCreateWindow(xml.modelFiles[xml.modelFiles.size() - 1].c_str());
+    for(int i = 0; i < nOfFiles; i++){
+        lerficheiro(xml.models[xml.models.size() - 1].getModelFiles()[0]);
+        glutCreateWindow(xml.models[xml.models.size() - 1].getModelFiles()[0].c_str());
+        // put callback registration here
+        glutDisplayFunc(renderScene);
+        glutReshapeFunc(changeSize);
+    }
     
     // put callback registration here
-    glutDisplayFunc(renderScene);
-    glutReshapeFunc(changeSize);    
+    // glutDisplayFunc(renderScene);
+    // glutReshapeFunc(changeSize);    
 	// OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
