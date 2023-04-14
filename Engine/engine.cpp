@@ -397,23 +397,16 @@ void lerXML(string ficheiro) {
 	if (!(doc.LoadFile(ficheiro.c_str()))){  //condicao que carrega o ficheiro e testa se é válido
 		cout << "Ficheiro lido com sucesso" << endl;
 
-		XMLElement* elemento = doc.FirstChildElement("world")->FirstChildElement("group");    //pega no elemento world do xml
-		while (elemento != nullptr) {                  //avança até ser null
-			extern Figure f;
-			readGrupo(f, elemento);
-			xml.models.push_back(f);
-			elemento = elemento->NextSiblingElement();     //avança para o proximo
-		}
+	XMLElement* root = doc.RootElement();
+	XMLElement* worldElem = root->FirstChildElement("world");
 
-		XMLElement* root = doc.RootElement();
-
-        XMLElement* windowElem = root->FirstChildElement("window");
+        XMLElement* windowElem = worldElem->FirstChildElement("window");
         if (windowElem) {
             windowElem->QueryIntAttribute("width", &xml.windowWidth);
             windowElem->QueryIntAttribute("height", &xml.windowHeight);
         }
 
-        XMLElement* cameraElem = root->FirstChildElement("camera");
+        XMLElement* cameraElem = worldElem->FirstChildElement("camera");
         if (cameraElem) {
             XMLElement* posElem = cameraElem->FirstChildElement("position");
             if (posElem){
@@ -444,7 +437,7 @@ void lerXML(string ficheiro) {
             }
         }
 
-		XMLElement* grupoElem = root->FirstChildElement("group");
+		XMLElement* grupoElem = worldElem->FirstChildElement("group");
 		while(grupoElem != nullptr){
 			Figure fig = readGrupo(grupoElem);
 			xml.models.push_back(fig);
