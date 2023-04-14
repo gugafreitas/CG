@@ -441,7 +441,7 @@ void lerXML(string ficheiro) {
 		while(grupoElem != nullptr){
 			Figure fig = readGrupo(grupoElem);
 			xml.models.push_back(fig);
-			grupoElem = grupoElem->NextSibling();
+			grupoElem = grupoElem->NextSiblingElement();
 		}
 	}
 
