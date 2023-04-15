@@ -2,7 +2,6 @@
 #include "transformacao.h"
 #include <string>
 #include <vector>
-#pragma once
 
 
 using namespace std;
@@ -10,7 +9,7 @@ using namespace std;
 class Figure{
     vector<Ponto> pontos;
     //Color color;
-    vector<string> modelFiles;
+    vector<string> modelFiles; //Isto tem todos os modelos so precisa de ter um 
     vector<Figure> figuras;
     Transformacao transformacoes;
 

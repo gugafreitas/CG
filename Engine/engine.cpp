@@ -52,168 +52,6 @@ struct World {
     vector<Figure> models;
 }xml;
 
-// void lerXML(string ficheiro) {
-//     XMLDocument doc;
-//     if (doc.LoadFile(ficheiro.c_str()) != XML_SUCCESS) {
-//         std::cerr << "Error loading XML file: " << doc.GetErrorStr1() << std::endl;
-//         return;
-//     }
-
-//     XMLElement* root = doc.RootElement();
-
-//     XMLElement* windowElem = root->FirstChildElement("window");
-//     if (windowElem) {
-//         windowElem->QueryIntAttribute("width", &xml.windowWidth);
-//         windowElem->QueryIntAttribute("height", &xml.windowHeight);
-//     }
-
-//     XMLElement* cameraElem = root->FirstChildElement("camera");
-//     if (cameraElem) {
-//         XMLElement* posElem = cameraElem->FirstChildElement("position");
-//         if (posElem){
-//             posElem->QueryFloatAttribute("x", &xml.cameraPosX);
-//             posElem->QueryFloatAttribute("y", &xml.cameraPosY);
-//             posElem->QueryFloatAttribute("z", &xml.cameraPosZ);
-//         }
-
-//         XMLElement* lookAtElem = cameraElem->FirstChildElement("lookAt");
-//         if (lookAtElem) {
-//             lookAtElem->QueryFloatAttribute("x", &xml.cameraLookAtX);
-//             lookAtElem->QueryFloatAttribute("y", &xml.cameraLookAtY);
-//             lookAtElem->QueryFloatAttribute("z", &xml.cameraLookAtZ);
-//         }
-
-//         XMLElement* upElem = cameraElem->FirstChildElement("up");
-//         if (upElem) {
-//             upElem->QueryFloatAttribute("x", &xml.cameraUpX);
-//             upElem->QueryFloatAttribute("y", &xml.cameraUpY);
-//             upElem->QueryFloatAttribute("z", &xml.cameraUpZ);
-//         }
-
-//         XMLElement* projElem = cameraElem->FirstChildElement("projection");
-//         if (projElem) {
-//             projElem->QueryFloatAttribute("fov", &xml.cameraFov);
-//             projElem->QueryFloatAttribute("near", &xml.cameraNear);
-//             projElem->QueryFloatAttribute("far", &xml.cameraFar);
-//         }
-//     }
-
-//     XMLElement* groupElem = root->FirstChildElement("group");
-//     while(groupElem){
-//         Figure figAux;
-//         XMLElement* transformElem = groupElem->FirstChildElement("transform");
-//         if(transformElem){
-//             XMLElement* scaleElem = transformElem->FirstChildElement("scale");
-//             Transformacao auxT;
-//             if(scaleElem){
-//                 float xe, ye, ze;
-//                 scaleElem->QueryFloatAttribute("x", &xe);
-//                 scaleElem->QueryFloatAttribute("y", &ye);
-//                 scaleElem->QueryFloatAttribute("z", &ze);
-
-//                 auxT.setEscalaX(xe);
-//                 auxT.setEscalaY(ye);
-//                 auxT.setEscalaZ(ze);
-//             }
-
-//             XMLElement* translateElem = transformElem->FirstChildElement("translate");
-//             if(translateElem){
-//                 float xt, yt, zt;
-//                 translateElem->QueryFloatAttribute("x", &xt);
-//                 translateElem->QueryFloatAttribute("y", &yt);
-//                 translateElem->QueryFloatAttribute("z", &zt);
-
-//                 auxT.setTranslacaoX(xt);
-//                 auxT.setTranslacaoY(yt);
-//                 auxT.setTranslacaoZ(zt);
-//             }
-
-//             XMLElement* rotateElem = transformElem->FirstChildElement("rotate");
-//             if(rotateElem){
-//                 float xr, yr, zr, ar;
-//                 rotateElem->QueryFloatAttribute("x", &xr);
-//                 rotateElem->QueryFloatAttribute("y", &yr);
-//                 rotateElem->QueryFloatAttribute("z", &zr);
-//                 rotateElem->QueryFloatAttribute("angle", &ar);
-
-//                 auxT.setRotacaoAngle(ar);
-//                 auxT.setRotacaoX(xr);
-//                 auxT.setRotacaoY(yr);
-//                 auxT.setRotacaoZ(zr);
-//             }
-//             figAux.setTransform(auxT);
-//         }
-
-//         XMLElement* modelsElem = groupElem->FirstChildElement("models");
-//         if(modelsElem){
-//             XMLElement* modelElem = modelsElem->FirstChildElement("model");
-//             while(modelElem){
-//                 string filePath = modelElem->Attribute("file");
-//                 figAux.addModelFile(filePath);
-//				   modelElem = modelElem->NextSiblingElement();
-//             }
-//         }
-
-//         XMLElement* groupElem1 = groupElem->FirstChildElement("group");
-//         while(groupElem1){
-//             Figure figAux1;
-//             XMLElement* transformElem1 = groupElem1->FirstChildElement("transform");
-//             if(transformElem1){
-//                 XMLElement* scaleElem1 = transformElem1->FirstChildElement("scale");
-//                 Transformacao auxT1;
-//                 if(scaleElem1){
-//                     float xe, ye, ze;
-//                     scaleElem1->QueryFloatAttribute("x", &xe);
-//                     scaleElem1->QueryFloatAttribute("y", &ye);
-//                     scaleElem1->QueryFloatAttribute("z", &ze);
-
-//                     auxT1.setEscalaX(xe);
-//                     auxT1.setEscalaY(ye);
-//                     auxT1.setEscalaZ(ze);
-//                 }
-
-//                 XMLElement* translateElem1 = transformElem1->FirstChildElement("translate");
-//                 if(translateElem1){
-//                     float xt, yt, zt;
-//                     translateElem1->QueryFloatAttribute("x", &xt);
-//                     translateElem1->QueryFloatAttribute("y", &yt);
-//                     translateElem1->QueryFloatAttribute("z", &zt);
-
-//                     auxT1.setTranslacaoX(xt);
-//                     auxT1.setTranslacaoY(yt);
-//                     auxT1.setTranslacaoZ(zt);
-//                 }
-
-//                 XMLElement* rotateElem1 = transformElem1->FirstChildElement("rotate");
-//                 if(rotateElem1){
-//                     float xr, yr, zr, ar;
-//                     rotateElem1->QueryFloatAttribute("x", &xr);
-//                     rotateElem1->QueryFloatAttribute("y", &yr);
-//                     rotateElem1->QueryFloatAttribute("z", &zr);
-//                     rotateElem1->QueryFloatAttribute("angle", &ar);
-
-//                     auxT1.setRotacaoAngle(ar);
-//                     auxT1.setRotacaoX(xr);
-//                     auxT1.setRotacaoY(yr);
-//                     auxT1.setRotacaoZ(zr);
-//                 }
-//                 figAux1.setTransform(auxT1);
-//             }
-
-//             XMLElement* modelsElem1 = groupElem1->FirstChildElement("models");
-//             if(modelsElem1){
-//                 XMLElement* modelElem1 = modelsElem1->FirstChildElement("model");
-//                 while(modelElem1){
-//                     string filePath = modelElem1->Attribute("file");
-//                     figAux1.addModelFile(filePath);
-//                 }
-//             }
-//             figAux.addFigura(figAux1);
-//         }
-//         xml.models.push_back(figAux);
-//     }
-// }
-
 void drawPontos(vector<Ponto> p) {
 	int i = 0;
 
@@ -227,9 +65,7 @@ void drawPontos(vector<Ponto> p) {
 		i++;
 		glEnd();
 	}
-
 }
-
 
 void drawFigure(Figure fig) {
 	Transformacao trans = fig.getTransform();
@@ -258,58 +94,18 @@ void drawFigure(Figure fig) {
 	glPopMatrix();
 }
 
-//esta penso que já está, confirmem só
 void drawFigures() {
 	for (int i = 0; i < xml.models.size(); i++) {
 		drawFigure(xml.models[i]);
 	}
 }
-/*
-void lerficheiro(std::string fileP) {
-	string linha,token,delimiter = ",";
-	int pos;
-	double a,b,c;
-	extern Ponto p;
 
-	ifstream file(fileP);
-	if (file.is_open()){
-
-		while(getline(file,linha)){
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0,pos);
-			a = atof(token.c_str());
-			linha.erase(0,pos + delimiter.length());
-			p.setX(a);
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0,pos);
-			b = atof(token.c_str());
-			linha.erase(0,pos + delimiter.length());
-			p.setY(b);
-
-			pos = linha.find(delimiter);
-			token = linha.substr(0, pos);
-			c = atof(token.c_str());
-			linha.erase(0, pos + delimiter.length());
-			p.setZ(c);
-
-			//cout << p.x << " " << p.y << " " << p.z << endl;
-			vertices.push_back(p);
-		}
-		file.close();			
-	}
-	else {
-		cout << "ERRO AO LER O FICHEIRO" << endl;
-	}
-}
-*/
 Figure readGrupo(XMLElement* grupoXML) {
 
-	Figure resF;
+	Figure resF = Figure();
 	XMLElement* transformAux = grupoXML->FirstChildElement("transform");
 
-	Transformacao tAux;
+	Transformacao tAux = Transformacao();
 	XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
 	
 	if (translacaoElemento != nullptr) {
@@ -323,9 +119,9 @@ Figure readGrupo(XMLElement* grupoXML) {
 		if (translacaoElemento->Attribute("z") != nullptr) {
 			z = stof(translacaoElemento->Attribute("z"));
 		}
-		tAux.setTranslacaoX(x);
-		tAux.setTranslacaoY(y);
-		tAux.setTranslacaoZ(z);
+		tAux.sumTranslacaoX(x);
+		tAux.sumTranslacaoY(y);
+		tAux.sumTranslacaoZ(z);
 	}
 
 
@@ -344,10 +140,10 @@ Figure readGrupo(XMLElement* grupoXML) {
 		if (rotacaoElemento->Attribute("z") != nullptr) {
 			z = stof(rotacaoElemento->Attribute("z"));
 		}
-		tAux.setRotacaoAngle(angulo);
-		tAux.setRotacaoX(x);
-		tAux.setRotacaoY(y);
-		tAux.setRotacaoZ(z);
+		tAux.sumRotacaoAngle(angulo);
+		tAux.sumRotacaoX(x);
+		tAux.sumRotacaoY(y);
+		tAux.sumRotacaoZ(z);
 	}
 
 
@@ -364,9 +160,9 @@ Figure readGrupo(XMLElement* grupoXML) {
 			z = stof(escalaElemento->Attribute("z"));
 		}
 		
-		tAux.setEscalaX(x);
-		tAux.setEscalaY(y);
-		tAux.setEscalaZ(z);
+		tAux.sumEscalaX(x);
+		tAux.sumEscalaY(y);
+		tAux.sumEscalaZ(z);
 	}
 	resF.setTransform(tAux);
 

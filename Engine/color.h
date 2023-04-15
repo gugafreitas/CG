@@ -1,4 +1,4 @@
-#pragma once
+
 
 class Color{
     float c1;

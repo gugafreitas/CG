@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /Users/goncalofreitas/Desktop/CG/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/phase1.dir/all
+all: CMakeFiles/Engine.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/phase1.dir/clean
+clean: CMakeFiles/Engine.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/phase1.dir
+# Target rules for target CMakeFiles/Engine.dir
 
 # All Build rule for target.
-CMakeFiles/phase1.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=1,2,3 "Built target phase1"
-.PHONY : CMakeFiles/phase1.dir/all
+CMakeFiles/Engine.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/goncalofreitas/Desktop/CG/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target Engine"
+.PHONY : CMakeFiles/Engine.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/phase1.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 3
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/phase1.dir/all
+CMakeFiles/Engine.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 6
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Engine.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/goncalofreitas/Desktop/CG/build/CMakeFiles 0
-.PHONY : CMakeFiles/phase1.dir/rule
+.PHONY : CMakeFiles/Engine.dir/rule
 
 # Convenience name for target.
-phase1: CMakeFiles/phase1.dir/rule
-.PHONY : phase1
+Engine: CMakeFiles/Engine.dir/rule
+.PHONY : Engine
 
 # clean rule for target.
-CMakeFiles/phase1.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/phase1.dir/build.make CMakeFiles/phase1.dir/clean
-.PHONY : CMakeFiles/phase1.dir/clean
+CMakeFiles/Engine.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Engine.dir/build.make CMakeFiles/Engine.dir/clean
+.PHONY : CMakeFiles/Engine.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
