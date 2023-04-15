@@ -804,6 +804,9 @@ CMakeFiles/Engine.dir/figure.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/figu
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__bit_reference \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__split_buffer
 
+CMakeFiles/Engine.dir/ponto.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/ponto.cpp \
+  /Users/goncalofreitas/Desktop/CG/Engine/ponto.h
+
 CMakeFiles/Engine.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.cpp \
   /Users/goncalofreitas/Desktop/CG/Engine/tinyxml2.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/cctype \
@@ -921,6 +924,13 @@ CMakeFiles/Engine.dir/tinyxml2.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/ti
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/cstdarg \
   /Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include/stdarg.h
 
+CMakeFiles/Engine.dir/transformacao.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/transformacao.cpp \
+  /Users/goncalofreitas/Desktop/CG/Engine/transformacao.h
+
+
+/Users/goncalofreitas/Desktop/CG/Engine/transformacao.cpp:
+
+/Users/goncalofreitas/Desktop/CG/Engine/ponto.cpp:
 
 /Users/goncalofreitas/Desktop/CG/Engine/figure.cpp:
 
