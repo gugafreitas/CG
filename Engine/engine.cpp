@@ -52,6 +52,45 @@ struct World {
     vector<Figure> models;
 }xml;
 
+void lerficheiro(std::string fileP) {
+	string linha,token,delimiter = ",";
+	int pos;
+	double a,b,c;
+	Ponto p;
+
+	ifstream file(fileP);
+	if (file.is_open()){
+
+		while(getline(file,linha)){
+
+			pos = linha.find(delimiter);
+			token = linha.substr(0,pos);
+			a = atof(token.c_str());
+			linha.erase(0,pos + delimiter.length());
+			p.setX(a);
+
+			pos = linha.find(delimiter);
+			token = linha.substr(0,pos);
+			b = atof(token.c_str());
+			linha.erase(0,pos + delimiter.length());
+			p.setY(b);
+
+			pos = linha.find(delimiter);
+			token = linha.substr(0, pos);
+			c = atof(token.c_str());
+			linha.erase(0, pos + delimiter.length());
+			p.setZ(c);
+
+			//cout << p.x << " " << p.y << " " << p.z << endl;
+			vertices.push_back(p);
+		}
+		file.close();			
+	}
+	else {
+		cout << "ERRO AO LER O FICHEIRO" << endl;
+	}
+}
+
 void drawPontos(vector<Ponto> p) {
 	int i = 0;
 
@@ -81,7 +120,7 @@ void drawFigure(Figure fig) {
 	glTranslatef(trans.getTranslacaoX(), trans.getTranslacaoY(), trans.getTranslacaoZ());
 	glRotatef(trans.getRotacaoAngle(), trans.getRotacaoX(), trans.getRotacaoY(), trans.getRotacaoZ());
 	glScalef(trans.getEscalaX(), trans.getEscalaY(), trans.getEscalaZ());
-
+	
 	for (int i = 0; i < mods.size(); i++) {
 		glColor3f(R, G, B);
 		drawPontos(pon);
@@ -100,14 +139,14 @@ void drawFigures() {
 	}
 }
 
-Figure readGrupo(XMLElement* grupoXML) {
+void readGrupo(XMLElement* grupoXML,Figure resF) {
 
-	Figure resF = Figure();
-	XMLElement* transformAux = grupoXML->FirstChildElement("transform");
+	//Figure resF = Figure();
+	XMLElement* grupoAux = grupoXML->FirstChildElement("group");
+	XMLElement* transformAux = grupoAux->FirstChildElement("transform");
 
 	Transformacao tAux = Transformacao();
 	XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
-	
 	if (translacaoElemento != nullptr) {
 		float x = 0, y = 0, z = 0;
 		if (translacaoElemento->Attribute("x") != nullptr) {
@@ -123,7 +162,6 @@ Figure readGrupo(XMLElement* grupoXML) {
 		tAux.sumTranslacaoY(y);
 		tAux.sumTranslacaoZ(z);
 	}
-
 
 	XMLElement* rotacaoElemento = transformAux->FirstChildElement("rotate");
 	if (rotacaoElemento != nullptr) {
@@ -159,14 +197,13 @@ Figure readGrupo(XMLElement* grupoXML) {
 		if (escalaElemento->Attribute("z") != nullptr) {
 			z = stof(escalaElemento->Attribute("z"));
 		}
-		
 		tAux.sumEscalaX(x);
 		tAux.sumEscalaY(y);
 		tAux.sumEscalaZ(z);
 	}
 	resF.setTransform(tAux);
 
-	XMLElement* modelosXML = grupoXML->FirstChildElement("models");
+	XMLElement* modelosXML = grupoAux->FirstChildElement("models");
 
 	if (modelosXML != nullptr) {
 			XMLElement* modelElem = modelosXML->FirstChildElement("model");
@@ -178,14 +215,16 @@ Figure readGrupo(XMLElement* grupoXML) {
             }
 	}
 	
-	XMLElement* filhos = grupoXML->FirstChildElement("group");
+	XMLElement* filhos = grupoAux->FirstChildElement("group");
 
 	while(filhos != nullptr) {
-		Figure filho = readGrupo(filhos);
-		resF.addFigura(filho);
+		Figure filho;
+		readGrupo(filhos,filho);
+		resF.addFigura(filho);		
 		filhos = filhos->NextSiblingElement();
 	}
-	return resF;
+	xml.models.push_back(resF);
+	//return resF;
 }
 
 void lerXML(string ficheiro) {
@@ -193,16 +232,15 @@ void lerXML(string ficheiro) {
 	if (!(doc.LoadFile(ficheiro.c_str()))){  //condicao que carrega o ficheiro e testa se é válido
 		cout << "Ficheiro lido com sucesso" << endl;
 
-	XMLElement* root = doc.RootElement();
-	XMLElement* worldElem = root->FirstChildElement("world");
+		XMLElement* root = doc.RootElement();
 
-        XMLElement* windowElem = worldElem->FirstChildElement("window");
+        XMLElement* windowElem = root->FirstChildElement("window");
         if (windowElem) {
             windowElem->QueryIntAttribute("width", &xml.windowWidth);
             windowElem->QueryIntAttribute("height", &xml.windowHeight);
         }
 
-        XMLElement* cameraElem = worldElem->FirstChildElement("camera");
+        XMLElement* cameraElem = root->FirstChildElement("camera");
         if (cameraElem) {
             XMLElement* posElem = cameraElem->FirstChildElement("position");
             if (posElem){
@@ -233,14 +271,14 @@ void lerXML(string ficheiro) {
             }
         }
 
-		XMLElement* grupoElem = worldElem->FirstChildElement("group");
+		XMLElement* grupoElem = root->FirstChildElement("group");
 		while(grupoElem != nullptr){
-			Figure fig = readGrupo(grupoElem);
+			Figure fig;
+			readGrupo(grupoElem,fig);
 			xml.models.push_back(fig);
 			grupoElem = grupoElem->NextSiblingElement();
 		}
 	}
-
 	else {
 		cout << "Erro ao ler o xml" << endl;
 	}
@@ -285,26 +323,23 @@ void renderScene(void) {
             xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
 			xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
 
-	// put drawing instructions here
-    // glPolygonMode(GL_FRONT_AND_BACK,linha);
-    // glTranslatef(camX,camY,camZ);
-    // glRotatef(a,0,1,0);
-    // glRotatef(w,1,0,0);
-	
-    // glBegin(GL_TRIANGLES);
-    // glColor3f(R,G,B);
-    // for (int i = 0; i < vertices.size(); i++){
-    //     glVertex3f(vertices[i].getX(), vertices[i].getY(), vertices[i].getZ());
-    // }
-	// glEnd();
-
     drawFigures();
 
 	// End of frame
 	glutSwapBuffers();
 }
 
+void lerMultiFicheiros(vector<Figure> figs){
+	for(int i = 0; i < figs.size(); i++){
+		for(int j = 0; j < figs[i].getModelFiles().size(); j++){
+			lerficheiro(figs[i].getModelFiles()[j]);
+		}
 
+		for(int o = 0; o < figs[i].getFiguras().size(); o++){
+			lerMultiFicheiros(figs[i].getFiguras());
+		}
+	}
+}
 
 int main(int argc, char **argv) {
 
@@ -317,6 +352,8 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(xml.windowWidth,xml.windowHeight);
+	
+	lerMultiFicheiros(xml.models);
     glutCreateWindow("Phase 2");
 
     // put callback registration here
@@ -326,6 +363,7 @@ int main(int argc, char **argv) {
 	// OpenGL settings
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+
 	
 	// enter GLUT's main loop
 	glutMainLoop(); 
