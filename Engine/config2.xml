@@ -51,15 +51,15 @@
             </models>
 
                 <!-- LUA -->
-                <group>
-                    <transform>
-                        <translate x="3" y="3" z="3"/>
-                        <scale x="0.05" y="0.05" z="0.05" />
-                    </transform>
-                    <models>
-                        <model file="sphere.3d" />
-                    </models>
-                </group>
+            <group>
+                <transform>
+                    <translate x="3" y="3" z="3"/>
+                    <scale x="0.05" y="0.05" z="0.05" />
+                </transform>
+                <models>
+                    <model file="sphere.3d" />
+                </models>
+            </group>
         </group>
 
         <!-- MARTE -->

@@ -52,7 +52,8 @@ struct World {
     vector<Figure> models;
 }xml;
 
-void lerficheiro(std::string fileP) {
+void lerficheiro(std::string fileP,Figure f) {
+	printf("String : %s\n",fileP.c_str());
 	string linha,token,delimiter = ",";
 	int pos;
 	double a,b,c;
@@ -60,8 +61,10 @@ void lerficheiro(std::string fileP) {
 
 	ifstream file(fileP);
 	if (file.is_open()){
+		printf("Abri\n");
 
-		while(getline(file,linha)){
+		while(file.is_open()){
+			getline(file,linha);
 
 			pos = linha.find(delimiter);
 			token = linha.substr(0,pos);
@@ -82,7 +85,8 @@ void lerficheiro(std::string fileP) {
 			p.setZ(c);
 
 			//cout << p.x << " " << p.y << " " << p.z << endl;
-			vertices.push_back(p);
+			f.addPonto(p);
+			printf("N pontos dentro: %d	n",f.getPontos().size());
 		}
 		file.close();			
 	}
@@ -93,6 +97,7 @@ void lerficheiro(std::string fileP) {
 
 void drawPontos(vector<Ponto> p) {
 	int i = 0;
+	printf("N pontos: %d\n",p.size());
 
 	while(i < p.size()) {
 		glBegin(GL_TRIANGLES);
@@ -104,6 +109,7 @@ void drawPontos(vector<Ponto> p) {
 		i++;
 		glEnd();
 	}
+	printf("Desenhei\n");
 }
 
 void drawFigure(Figure fig) {
@@ -120,7 +126,6 @@ void drawFigure(Figure fig) {
 	glTranslatef(trans.getTranslacaoX(), trans.getTranslacaoY(), trans.getTranslacaoZ());
 	glRotatef(trans.getRotacaoAngle(), trans.getRotacaoX(), trans.getRotacaoY(), trans.getRotacaoZ());
 	glScalef(trans.getEscalaX(), trans.getEscalaY(), trans.getEscalaZ());
-	
 	for (int i = 0; i < mods.size(); i++) {
 		glColor3f(R, G, B);
 		drawPontos(pon);
@@ -135,95 +140,108 @@ void drawFigure(Figure fig) {
 
 void drawFigures() {
 	for (int i = 0; i < xml.models.size(); i++) {
+		for(int j=0;j<xml.models[i].getModelFiles().size();j++)
+			lerficheiro(xml.models[i].getModelFiles()[j],xml.models[i]);
 		drawFigure(xml.models[i]);
 	}
 }
 
-void readGrupo(XMLElement* grupoXML,Figure resF) {
+void readGrupo(XMLElement* grupoXML,Figure res) {
 
 	//Figure resF = Figure();
 	XMLElement* grupoAux = grupoXML->FirstChildElement("group");
-	XMLElement* transformAux = grupoAux->FirstChildElement("transform");
+	while(grupoAux != nullptr){
+		Figure resF;
+		XMLElement* transformAux = grupoAux->FirstChildElement("transform");
 
-	Transformacao tAux = Transformacao();
-	XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
-	if (translacaoElemento != nullptr) {
-		float x = 0, y = 0, z = 0;
-		if (translacaoElemento->Attribute("x") != nullptr) {
-			x = stof(translacaoElemento->Attribute("x"));
+		Transformacao tAux = Transformacao();
+		XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
+		if (translacaoElemento != nullptr) {
+			float x = 0, y = 0, z = 0;
+			if (translacaoElemento->Attribute("x") != nullptr) {
+				x = stof(translacaoElemento->Attribute("x"));
+			}
+			if (translacaoElemento->Attribute("y") != nullptr) {
+				y = stof(translacaoElemento->Attribute("y"));
+			}
+			if (translacaoElemento->Attribute("z") != nullptr) {
+				z = stof(translacaoElemento->Attribute("z"));
+			}
+			tAux.sumTranslacaoX(x);
+			tAux.sumTranslacaoY(y);
+			tAux.sumTranslacaoZ(z);
 		}
-		if (translacaoElemento->Attribute("y") != nullptr) {
-			y = stof(translacaoElemento->Attribute("y"));
+
+		XMLElement* rotacaoElemento = transformAux->FirstChildElement("rotate");
+		if (rotacaoElemento != nullptr) {
+			float angulo = 0, x = 0, y = 0, z = 0;
+			if (rotacaoElemento->Attribute("angle") != nullptr) {
+				angulo = stof(rotacaoElemento->Attribute("angle"));
+			}
+			if (rotacaoElemento->Attribute("x") != nullptr) {
+				x = stof(rotacaoElemento->Attribute("x"));
+			}
+			if (rotacaoElemento->Attribute("y") != nullptr) {
+				y = stof(rotacaoElemento->Attribute("y"));
+			}
+			if (rotacaoElemento->Attribute("z") != nullptr) {
+				z = stof(rotacaoElemento->Attribute("z"));
+			}
+			tAux.sumRotacaoAngle(angulo);
+			tAux.sumRotacaoX(x);
+			tAux.sumRotacaoY(y);
+			tAux.sumRotacaoZ(z);
 		}
-		if (translacaoElemento->Attribute("z") != nullptr) {
-			z = stof(translacaoElemento->Attribute("z"));
+
+
+		XMLElement* escalaElemento = transformAux->FirstChildElement("scale");
+		if (escalaElemento != nullptr) {
+			float x = 0, y = 0, z = 0;
+			if (escalaElemento->Attribute("x") != nullptr) {
+				x = stof(escalaElemento->Attribute("x"));
+			}
+			if (escalaElemento->Attribute("y") != nullptr) {
+				y = stof(escalaElemento->Attribute("y"));
+			}
+			if (escalaElemento->Attribute("z") != nullptr) {
+				z = stof(escalaElemento->Attribute("z"));
+			}
+			tAux.sumEscalaX(x);
+			tAux.sumEscalaY(y);
+			tAux.sumEscalaZ(z);
 		}
-		tAux.sumTranslacaoX(x);
-		tAux.sumTranslacaoY(y);
-		tAux.sumTranslacaoZ(z);
+		resF.setTransform(tAux);
+
+		XMLElement* modelosXML = grupoAux->FirstChildElement("models");
+
+		if (modelosXML != nullptr) {
+				printf("LER MODELOS func readGrupo\n");
+				XMLElement* modelElem = modelosXML->FirstChildElement("model");
+				while(modelElem){
+					string filePath;
+					filePath = modelElem->Attribute("file");
+					printf("FilePath: %s\n", filePath.c_str());
+					resF.addModelFile(filePath);
+					modelElem = modelElem->NextSiblingElement();
+				}
+		}
+		
+		XMLElement* filhos = grupoAux->FirstChildElement("group");
+
+		printf("FILHOS\n");
+
+		while(filhos != nullptr) {
+			printf("HORA DE LER OS FILHOS\n");
+			Figure filho;
+			readGrupo(grupoAux,filho);
+			//printf("Depois\n");
+			resF.addFigura(filho);
+			filhos = filhos->NextSiblingElement();
+		}
+		res.addFigura(resF);
+		grupoAux = grupoAux->NextSiblingElement();
 	}
-
-	XMLElement* rotacaoElemento = transformAux->FirstChildElement("rotate");
-	if (rotacaoElemento != nullptr) {
-		float angulo = 0, x = 0, y = 0, z = 0;
-		if (rotacaoElemento->Attribute("angle") != nullptr) {
-			angulo = stof(rotacaoElemento->Attribute("angle"));
-		}
-		if (rotacaoElemento->Attribute("x") != nullptr) {
-			x = stof(rotacaoElemento->Attribute("x"));
-		}
-		if (rotacaoElemento->Attribute("y") != nullptr) {
-			y = stof(rotacaoElemento->Attribute("y"));
-		}
-		if (rotacaoElemento->Attribute("z") != nullptr) {
-			z = stof(rotacaoElemento->Attribute("z"));
-		}
-		tAux.sumRotacaoAngle(angulo);
-		tAux.sumRotacaoX(x);
-		tAux.sumRotacaoY(y);
-		tAux.sumRotacaoZ(z);
-	}
-
-
-	XMLElement* escalaElemento = transformAux->FirstChildElement("scale");
-	if (escalaElemento != nullptr) {
-		float x = 0, y = 0, z = 0;
-		if (escalaElemento->Attribute("x") != nullptr) {
-			x = stof(escalaElemento->Attribute("x"));
-		}
-		if (escalaElemento->Attribute("y") != nullptr) {
-			y = stof(escalaElemento->Attribute("y"));
-		}
-		if (escalaElemento->Attribute("z") != nullptr) {
-			z = stof(escalaElemento->Attribute("z"));
-		}
-		tAux.sumEscalaX(x);
-		tAux.sumEscalaY(y);
-		tAux.sumEscalaZ(z);
-	}
-	resF.setTransform(tAux);
-
-	XMLElement* modelosXML = grupoAux->FirstChildElement("models");
-
-	if (modelosXML != nullptr) {
-			XMLElement* modelElem = modelosXML->FirstChildElement("model");
-            while(modelElem){
-				string filePath;
-                filePath = modelElem->Attribute("file");
-                resF.addModelFile(filePath);
-				modelElem = modelElem->NextSiblingElement();
-            }
-	}
-	
-	XMLElement* filhos = grupoAux->FirstChildElement("group");
-
-	while(filhos != nullptr) {
-		Figure filho;
-		readGrupo(filhos,filho);
-		resF.addFigura(filho);		
-		filhos = filhos->NextSiblingElement();
-	}
-	xml.models.push_back(resF);
+	xml.models.push_back(res);
 	//return resF;
 }
 
@@ -282,7 +300,6 @@ void lerXML(string ficheiro) {
 	else {
 		cout << "Erro ao ler o xml" << endl;
 	}
-	return;
 }
 
 void changeSize(int w, int h) {
@@ -329,21 +346,26 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
-void lerMultiFicheiros(vector<Figure> figs){
-	for(int i = 0; i < figs.size(); i++){
-		for(int j = 0; j < figs[i].getModelFiles().size(); j++){
-			lerficheiro(figs[i].getModelFiles()[j]);
-		}
-
-		for(int o = 0; o < figs[i].getFiguras().size(); o++){
-			lerMultiFicheiros(figs[i].getFiguras());
-		}
-	}
-}
+// void lerMultiFicheiros(vector<Figure> figs){
+// 	printf("ENTREI NA LERMULTIFICHEIROS\n");
+// 	for(int i = 0; i < figs.size(); i++){
+// 		printf("%d\n",figs.size());
+// 		printf("size modelFiles: %d\n", figs[i].getModelFiles().size());
+// 		printf("modelFiles: %s\n", figs[i].getModelFiles()[i].c_str());
+// 		for(int j = 0; j < figs[i].getModelFiles().size(); j++){
+// 			lerficheiro(figs[i].getModelFiles()[j]);
+// 		}
+// 		printf("Num de filhos: %d\n", figs[i].getFiguras().size());
+// 		for(int o = 0; o < figs[i].getFiguras().size(); o++){
+// 			lerMultiFicheiros(figs[i].getFiguras());
+// 		}
+// 	}
+// }
 
 int main(int argc, char **argv) {
 
     if(argc > 1){
+		printf("VOU LER O XML\n");
 		lerXML(argv[1]);
 	}
 
@@ -352,8 +374,13 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(xml.windowWidth,xml.windowHeight);
+
+	// printf("glut done\n");
 	
-	lerMultiFicheiros(xml.models);
+	// lerMultiFicheiros(xml.models);
+
+	// printf("passei na lerMultiFicheiros\n");
+
     glutCreateWindow("Phase 2");
 
     // put callback registration here
