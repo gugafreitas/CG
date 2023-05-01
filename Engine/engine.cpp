@@ -55,10 +55,9 @@ struct World {
 //funcao que lê cada ficheiro .3d a partir do seu caminho
 //preenchendo a lista de pontos com os pontos lidos do ficheiro
 
-// void readFile(string caminho3d) {
+// void lerficheiro(string caminho3d, Figure f) {
 //     string linha;
-//     vector<string> coordenadas;
-//     list<Ponto> pontosLista;
+//     vector<Ponto> pontosLista;
     
 //     //abrir o ficheiro
 //     ifstream file(caminho3d);
@@ -75,27 +74,29 @@ struct World {
 //             };
 //             pontosLista.push_back(Ponto(stof(result[0]), stof(result[1]), stof(result[2]))); //adiciona o Ponto lido à lista de pontos
 //         }
-
-//         return pontosLista;
+//         //return pontosLista;
 //     }
 //     else { cout << "Erro ao ler o ficheiro .3d" << endl; }
 // }
 
-void lerficheiro(std::string fileP,Figure f) {
-	printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n");
-	printf("String : %s\n",fileP.c_str());
-	string linha,token,delimiter = ",";
+void lerficheiro(string fileP, Figure f) {
+	string linha, token, delimiter = ",";
 	int pos;
 	double a,b,c;
 	Ponto p;
+	
+	
+	printf("FICHEIRO A LER NO LERFICHEIRO: %s\n", fileP.c_str());
+	ifstream myFile(fileP);
 
-	ifstream file(fileP);
-	if (file.is_open()){
-		printf("Abri\n");
+	//printf("Abri o ficheiro\n");
+	if (myFile.is_open()){
+		printf("FICHEIRO ABERTO CRRRRRLLLLLLLLLLL\n");
 
-		while(getline(file,linha)){
-			getline(file,linha);
-
+		while(getline(myFile,linha)){
+			printf("ENTREI NO CICLO PARA LER O FICHEIRO AHAHAHAHAH\n");
+			
+			printf("LINHA QUE ACABEI DE LER: %s\n", linha.c_str());
 			pos = linha.find(delimiter);
 			token = linha.substr(0,pos);
 			a = atof(token.c_str());
@@ -118,10 +119,10 @@ void lerficheiro(std::string fileP,Figure f) {
 			f.addPonto(p);
 			printf("N pontos dentro: %d	n",f.getPontos().size());
 		}
-		file.close();			
+		myFile.close();			
 	}
 	else {
-		cout << "ERRO AO LER O FICHEIRO" << endl;
+		cout << "ERRO AO LER O FICHEIRO NA LERFICHEIRO" << endl;
 	}
 }
 
@@ -170,28 +171,27 @@ void drawFigure(Figure fig) {
 	glPopMatrix();
 }
 
-void drawFigures() {
-	printf("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx %d\n",xml.models[1].getModelFiles().size());
-	printf("++++++++++++++++++++++++++++++%d\n",xml.models.size());
-	for (int i = 0; i < xml.models.size(); i++) {
-		printf("I: %d\n",i);
-		printf("---------------------------%d\n",xml.models[i].getModelFiles().size());
-		for(int j=0;j<xml.models[i].getModelFiles().size();j++)
-			lerficheiro(xml.models[i].getModelFiles()[j],xml.models[i]);
-		drawFigure(xml.models[i]);
+void drawFigures(vector<Figure> figs) {
+	for (int i = 0; i < figs.size(); i++) {
+		printf("ENTREI NO CICLO DO drawFigures\n");
+		for(int j=0;j<figs[i].getModelFiles().size();j++){
+			printf("ENTREI NO CICLO DOS FILHOS DO drawFigures\n");
+			lerficheiro(figs[i].getModelFiles()[j],figs[i]);
+		}
+		drawFigure(figs[i]);
+		printf("-------------------------------------Estou a fazer o passo: %d\n",i);
+		drawFigures(figs[i].getFiguras());
 	}
 }
 
-void readGrupo(XMLElement* grupoXML,Figure res) {
+Figure readGrupo(XMLElement* grupoElem){
+	Figure res = Figure();
 
-	//Figure resF = Figure();
-	XMLElement* grupoAux = grupoXML->FirstChildElement("group");
-	while(grupoAux != nullptr){
-		Figure resF;
-		XMLElement* transformAux = grupoAux->FirstChildElement("transform");
-
+	XMLElement* transformAux = grupoElem->FirstChildElement("transform");
+	if(transformAux != nullptr){
 		Transformacao tAux = Transformacao();
 		XMLElement* translacaoElemento = transformAux->FirstChildElement("translate");
+
 		if (translacaoElemento != nullptr) {
 			float x = 0, y = 0, z = 0;
 			if (translacaoElemento->Attribute("x") != nullptr) {
@@ -246,46 +246,31 @@ void readGrupo(XMLElement* grupoXML,Figure res) {
 			tAux.sumEscalaY(y);
 			tAux.sumEscalaZ(z);
 		}
-		resF.setTransform(tAux);
-
-		XMLElement* modelosXML = grupoAux->FirstChildElement("models");
-
-		if (modelosXML != nullptr) {
-				printf("LER MODELOS func readGrupo\n");
-				XMLElement* modelElem = modelosXML->FirstChildElement("model");
-				while(modelElem != nullptr){
-					printf("FICHEIRO PARA LER NA FUNCAO readGrupo\n");
-					string filePath;
-					filePath = modelElem->Attribute("file");
-					printf("FilePath: %s\n", filePath.c_str());
-					resF.addModelFile(filePath);
-					printf("model file********************: %s \n", resF.getModelFiles()[0].c_str());
-					for(int o=0; o<resF.getModelFiles().size();o++){
-						printf("model file %d: %s ; ", o, resF.getModelFiles()[o].c_str());
-					}
-					printf("\n");
-					modelElem = modelElem->NextSiblingElement();
-				}
-		}
-		
-		XMLElement* filhos = grupoAux->FirstChildElement("group");
-
-		printf("FILHOS\n");
-
-		while(filhos != nullptr) {
-			printf("HORA DE LER OS FILHOS\n");
-			Figure filho;
-			readGrupo(grupoAux,filho);
-			//printf("Depois\n");
-			resF.addFigura(filho);
-			filhos = filhos->NextSiblingElement();
-		}
-		res.addFigura(resF);
-		grupoAux = grupoAux->NextSiblingElement();
+		res.setTransform(tAux);
+		//printf("TRANSFORM SET\n");
 	}
-	xml.models.push_back(res);
-	
-	//return resF;
+
+	XMLElement* modelosXML = grupoElem->FirstChildElement("models");
+	if(modelosXML != nullptr){
+		XMLElement* modelElem = modelosXML->FirstChildElement("model");
+		while(modelElem != nullptr){
+			//printf("MODELO\n");
+			string filePath;
+			filePath = modelElem->Attribute("file");
+			res.addModelFile(filePath);
+			modelElem = modelElem -> NextSiblingElement();
+		}
+	}
+
+	XMLElement* filhos = grupoElem->FirstChildElement("group");
+	while(filhos != nullptr){
+		//printf("FILHO\n");
+		Figure filho = readGrupo(filhos);
+		res.addFigura(filho);
+		filhos = filhos->NextSiblingElement();
+	}
+
+	return res;
 }
 
 void lerXML(string ficheiro) {
@@ -331,12 +316,14 @@ void lerXML(string ficheiro) {
                 projElem->QueryFloatAttribute("far", &xml.cameraFar);
             }
         }
-
+		//printf("LI AS DEFS DA CAMARA\n");
 		XMLElement* grupoElem = root->FirstChildElement("group");
+		//printf("HORA DE LER AS FIGURAS\n");
 		while(grupoElem != nullptr){
-			Figure fig;
-			readGrupo(grupoElem,fig);
-			xml.models.push_back(fig);
+			//printf("FIGURA PRA LER\n");
+			Figure res = readGrupo(grupoElem);
+			//printf("N DE FILHOS DE RES NA readGrupo: %d\n", res.getFiguras().size());
+			xml.models.push_back(res);
 			grupoElem = grupoElem->NextSiblingElement();
 		}
 	}
@@ -383,27 +370,27 @@ void renderScene(void) {
             xml.cameraLookAtX,xml.cameraLookAtY,xml.cameraLookAtZ,
 			xml.cameraUpX,xml.cameraUpY,xml.cameraUpZ);
 
-    drawFigures();
+    drawFigures(xml.models);
 
 	// End of frame
 	glutSwapBuffers();
 }
 
-// void lerMultiFicheiros(vector<Figure> figs){
-// 	printf("ENTREI NA LERMULTIFICHEIROS\n");
-// 	for(int i = 0; i < figs.size(); i++){
-// 		printf("%d\n",figs.size());
-// 		printf("size modelFiles: %d\n", figs[i].getModelFiles().size());
-// 		printf("modelFiles: %s\n", figs[i].getModelFiles()[i].c_str());
-// 		for(int j = 0; j < figs[i].getModelFiles().size(); j++){
-// 			lerficheiro(figs[i].getModelFiles()[j]);
-// 		}
-// 		printf("Num de filhos: %d\n", figs[i].getFiguras().size());
-// 		for(int o = 0; o < figs[i].getFiguras().size(); o++){
-// 			lerMultiFicheiros(figs[i].getFiguras());
-// 		}
-// 	}
-// }
+void testModels(vector<Figure> figs){
+	for(int i = 0; i < figs.size(); i++){
+		printf("N DE MODELOS DO MODEL %d: %d\n", i, figs[i].getModelFiles().size());
+		if(figs[i].getModelFiles().size() > 0){
+			for(int o = 0; o < figs[i].getModelFiles().size();o++){
+				printf("MODELFILE %d: %s\n", o, figs[i].getModelFiles()[o].c_str());
+			}
+		}
+		printf("N FILHOS DO MODEL %d: %d\n", i, figs[i].getFiguras().size());
+		if(figs[i].getFiguras().size() > 0){
+			testModels(figs[i].getFiguras());
+		}
+
+	}
+}
 
 int main(int argc, char **argv) {
 
@@ -411,18 +398,14 @@ int main(int argc, char **argv) {
 		printf("VOU LER O XML\n");
 		lerXML(argv[1]);
 	}
+	printf("N DE MODELS %d\n", xml.models.size());
+	testModels(xml.models);
 
     // put GLUT init here
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100,100);
     glutInitWindowSize(xml.windowWidth,xml.windowHeight);
-
-	// printf("glut done\n");
-	
-	// lerMultiFicheiros(xml.models);
-
-	// printf("passei na lerMultiFicheiros\n");
 
     glutCreateWindow("Phase 2");
 
