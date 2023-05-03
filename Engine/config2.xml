@@ -1,8 +1,8 @@
 <world>
     <window width="512" height="512" />
     <camera>
-        <position x="10" y="10" z="10" />
-        <lookAt x="0" y="0" z="0" />
+        <position x="75" y="75" z="75" />
+        <lookAt x="50" y="0" z="0" />
         <up x="0" y="1" z="0" />
         <projection fov="60" near="1" far="1000" />
     </camera>

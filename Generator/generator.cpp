@@ -1,4 +1,7 @@
 #include "generator.h"
+#include "../Engine/ponto.h"
+
+using namespace std;
 
 void plane(int lado, int divs, char* nome){
     //FILE *fp = fopen(nome, "w");
@@ -300,6 +303,88 @@ void box(double sideLength, int divisions, char *nome){
 		y = y + espal;
 	}
 	file.close();
+}
+
+Ponto calcula(vector<int> patch, vector<Ponto*> pontos, float u, float v) {
+
+
+
+    float coef1 = (1 - u) * (1 - u) * (1 - u);
+    float coef2 = 3 * (1 - u) * (1 - u) * u;
+    float coef3 = 3 * (1 - u) * u * u;
+    float coef4 = u * u * u;
+
+    float x1 = coef1 * pontos[patch[0]]->getX() + coef2 * pontos[patch[1]]->getX() + coef3 * pontos[patch[2]]->getX() + coef4 * pontos[patch[3]]->getX();
+    float x2 = coef1 * pontos[patch[4]]->getX() + coef2 * pontos[patch[5]]->getX() + coef3 * pontos[patch[6]]->getX() + coef4 * pontos[patch[7]]->getX();
+    float x3 = coef1 * pontos[patch[8]]->getX() + coef2 * pontos[patch[9]]->getX() + coef3 * pontos[patch[10]]->getX() + coef4 * pontos[patch[11]]->getX();
+    float x4 = coef1 * pontos[patch[12]]->getX() + coef2 * pontos[patch[13]]->getX() + coef3 * pontos[patch[14]]->getX() + coef4 * pontos[patch[15]]->getX();
+
+    float y1 = coef1 * pontos[patch[0]]->getY() + coef2 * pontos[patch[1]]->getY() + coef3 * pontos[patch[2]]->getY() + coef4 * pontos[patch[3]]->getY();
+    float y2 = coef1 * pontos[patch[4]]->getY() + coef2 * pontos[patch[5]]->getY() + coef3 * pontos[patch[6]]->getY() + coef4 * pontos[patch[7]]->getY();
+    float y3 = coef1 * pontos[patch[8]]->getY() + coef2 * pontos[patch[9]]->getY() + coef3 * pontos[patch[10]]->getY() + coef4 * pontos[patch[11]]->getY();
+    float y4 = coef1 * pontos[patch[12]]->getY() + coef2 * pontos[patch[13]]->getY() + coef3 * pontos[patch[14]]->getY() + coef4 * pontos[patch[15]]->getY();
+
+    float z1 = coef1 * pontos[patch[0]]->getZ() + coef2 * pontos[patch[1]]->getZ() + coef3 * pontos[patch[2]]->getZ() + coef4 * pontos[patch[3]]->getZ();
+    float z2 = coef1 * pontos[patch[4]]->getZ() + coef2 * pontos[patch[5]]->getZ() + coef3 * pontos[patch[6]]->getZ() + coef4 * pontos[patch[7]]->getZ();
+    float z3 = coef1 * pontos[patch[8]]->getZ() + coef2 * pontos[patch[9]]->getZ() + coef3 * pontos[patch[10]]->getZ() + coef4 * pontos[patch[11]]->getZ();
+    float z4 = coef1 * pontos[patch[12]]->getZ() + coef2 * pontos[patch[13]]->getZ() + coef3 * pontos[patch[14]]->getZ() + coef4 * pontos[patch[15]]->getZ();
+
+    float Coef1 = (1 - v) * (1 - v) * (1 - v);
+    float Coef2 = 3 * (1 - v) * (1 - v) * v;
+    float Coef3 = 3 * (1 - v) * v * v;
+    float Coef4 = v * v * v;
+
+    float x = Coef1 * x1 + Coef2 * x2 + Coef3 * x3 + Coef4 * x4;
+    float y = Coef1 * y1 + Coef2 * y2 + Coef3 * y3 + Coef4 * y4;
+    float z = Coef1 * z1 + Coef2 * z2 + Coef3 * z3 + Coef4 * z4;
+
+    return Ponto(x, y, z);
+
+}
+
+void curvaBezier(vector<Ponto>* vertices, std::vector<int> patch, std::vector<Ponto*> pontosControlo, float u, float v, float intervalo) {
+
+    Ponto p1 = calcula(patch, pontosControlo, u, v);
+    Ponto p2 = calcula(patch, pontosControlo, u, v + intervalo);
+    Ponto p3 = calcula(patch, pontosControlo, u + intervalo, v);
+    Ponto p4 = calcula(patch, pontosControlo, u + intervalo, v + intervalo);
+
+    vertices->push_back(p1);
+    vertices->push_back(p4);
+    vertices->push_back(p2);
+
+    vertices->push_back(p4);
+    vertices->push_back(p1);
+    vertices->push_back(p3);
+}
+
+//faz a leitura do ficheiro .patch
+void drawBezierPatches(string ficheiro, int nivel, string origem) {
+    float intervalo = (float)1.0 / nivel;
+    string linha;
+    std::vector<std::vector<int>> patches;
+    std::vector<Ponto*> pontosControlo;
+    std::vector<Ponto> resultado;
+
+    //abrir o ficheiro
+    ifstream file1(ficheiro);
+    if (!file1.is_open()) { cout << "Erro ao ler o ficheiro paches" << endl; return; }
+    //pega na primeira linha que é o número de patches ou seja numero de linhas a ler 
+    getline(file1, linha);
+    int nPatches = atoi(linha.c_str());
+
+    int t;
+    for (int i = 0; i < nPatches; i++) {
+        getline(file1, linha);     //pegar na linha atual
+        stringstream strstream(linha);
+        patches.push_back(std::vector<int>());
+        while (strstream >> t) {	// retirar as ,
+            patches[i].push_back(t);
+            if (strstream.peek() == ',') {
+                strstream.ignore();
+            }
+        }
+    }
 }
 
 int main(int argc, char *argv[]) {

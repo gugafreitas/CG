@@ -52,51 +52,18 @@ struct World {
     vector<Figure> models;
 }xml;
 
-//funcao que lê cada ficheiro .3d a partir do seu caminho
-//preenchendo a lista de pontos com os pontos lidos do ficheiro
-
-// void lerficheiro(string caminho3d, Figure f) {
-//     string linha;
-//     vector<Ponto> pontosLista;
-    
-//     //abrir o ficheiro
-//     ifstream file(caminho3d);
-//     if (file.is_open()) {
-        
-//         //pega na primeira linha que é o número de vértices ou seja numero de linhas a ler (1 vertice por linha)
-//         getline(file, linha);                   
-//         int nLinhas = atoi(linha.c_str());        
-//         for (int i = 1; i <= nLinhas; i++) {
-//             getline(file, linha);     //pegar na linha atual
-//             stringstream ss(linha);        
-//             vector<string> result{
-//                 istream_iterator<string>(ss), {}    //separar a linha nos espaços e guardar como array de strings em result
-//             };
-//             pontosLista.push_back(Ponto(stof(result[0]), stof(result[1]), stof(result[2]))); //adiciona o Ponto lido à lista de pontos
-//         }
-//         //return pontosLista;
-//     }
-//     else { cout << "Erro ao ler o ficheiro .3d" << endl; }
-// }
-
-void lerficheiro(string fileP, Figure f) {
+Figure lerficheiro(string fileP, Figure f) {
 	string linha, token, delimiter = ",";
 	int pos;
 	double a,b,c;
 	Ponto p;
+	Figure res = f;
 	
 	
-	printf("FICHEIRO A LER NO LERFICHEIRO: %s\n", fileP.c_str());
 	ifstream myFile(fileP);
 
-	//printf("Abri o ficheiro\n");
 	if (myFile.is_open()){
-		printf("FICHEIRO ABERTO CRRRRRLLLLLLLLLLL\n");
-
 		while(getline(myFile,linha)){
-			printf("ENTREI NO CICLO PARA LER O FICHEIRO AHAHAHAHAH\n");
-			
-			printf("LINHA QUE ACABEI DE LER: %s\n", linha.c_str());
 			pos = linha.find(delimiter);
 			token = linha.substr(0,pos);
 			a = atof(token.c_str());
@@ -115,22 +82,21 @@ void lerficheiro(string fileP, Figure f) {
 			linha.erase(0, pos + delimiter.length());
 			p.setZ(c);
 
-			//cout << p.x << " " << p.y << " " << p.z << endl;
-			f.addPonto(p);
-			printf("N pontos dentro: %d	n",f.getPontos().size());
+			res.addPonto(p);
 		}
 		myFile.close();			
 	}
 	else {
 		cout << "ERRO AO LER O FICHEIRO NA LERFICHEIRO" << endl;
 	}
+	return res;
 }
 
 void drawPontos(vector<Ponto> p) {
 	int i = 0;
-	printf("N pontos: %d\n",p.size());
 
 	while(i < p.size()) {
+		glColor3f(R, G, B);
 		glBegin(GL_TRIANGLES);
 		glVertex3f(p[i].getX(), p[i].getY(), p[i].getZ());
 		i++;
@@ -140,7 +106,6 @@ void drawPontos(vector<Ponto> p) {
 		i++;
 		glEnd();
 	}
-	printf("Desenhei\n");
 }
 
 void drawFigure(Figure fig) {
@@ -159,13 +124,7 @@ void drawFigure(Figure fig) {
 	glRotatef(trans.getRotacaoAngle(), trans.getRotacaoX(), trans.getRotacaoY(), trans.getRotacaoZ());
 	glScalef(trans.getEscalaX(), trans.getEscalaY(), trans.getEscalaZ());
 	for (int i = 0; i < mods.size(); i++) {
-		glColor3f(R, G, B);
 		drawPontos(pon);
-	}
-
-	for (int i = 0; i < vf.size(); i++) {
-		printf("Figura------------------\n");
-		drawFigure(vf[i]);
 	}
 
 	glPopMatrix();
@@ -173,15 +132,13 @@ void drawFigure(Figure fig) {
 
 void drawFigures(vector<Figure> figs) {
 	for (int i = 0; i < figs.size(); i++) {
-		printf("ENTREI NO CICLO DO drawFigures\n");
 		for(int j=0;j<figs[i].getModelFiles().size();j++){
-			printf("ENTREI NO CICLO DOS FILHOS DO drawFigures\n");
-			lerficheiro(figs[i].getModelFiles()[j],figs[i]);
+			figs[i] = lerficheiro(figs[i].getModelFiles()[j],figs[i]);
 		}
-		drawFigure(figs[i]);
-		printf("-------------------------------------Estou a fazer o passo: %d\n",i);
 		drawFigures(figs[i].getFiguras());
+		drawFigure(figs[i]);
 	}
+
 }
 
 Figure readGrupo(XMLElement* grupoElem){
@@ -247,14 +204,12 @@ Figure readGrupo(XMLElement* grupoElem){
 			tAux.sumEscalaZ(z);
 		}
 		res.setTransform(tAux);
-		//printf("TRANSFORM SET\n");
 	}
 
 	XMLElement* modelosXML = grupoElem->FirstChildElement("models");
 	if(modelosXML != nullptr){
 		XMLElement* modelElem = modelosXML->FirstChildElement("model");
 		while(modelElem != nullptr){
-			//printf("MODELO\n");
 			string filePath;
 			filePath = modelElem->Attribute("file");
 			res.addModelFile(filePath);
@@ -264,7 +219,6 @@ Figure readGrupo(XMLElement* grupoElem){
 
 	XMLElement* filhos = grupoElem->FirstChildElement("group");
 	while(filhos != nullptr){
-		//printf("FILHO\n");
 		Figure filho = readGrupo(filhos);
 		res.addFigura(filho);
 		filhos = filhos->NextSiblingElement();
@@ -316,13 +270,10 @@ void lerXML(string ficheiro) {
                 projElem->QueryFloatAttribute("far", &xml.cameraFar);
             }
         }
-		//printf("LI AS DEFS DA CAMARA\n");
+		
 		XMLElement* grupoElem = root->FirstChildElement("group");
-		//printf("HORA DE LER AS FIGURAS\n");
 		while(grupoElem != nullptr){
-			//printf("FIGURA PRA LER\n");
 			Figure res = readGrupo(grupoElem);
-			//printf("N DE FILHOS DE RES NA readGrupo: %d\n", res.getFiguras().size());
 			xml.models.push_back(res);
 			grupoElem = grupoElem->NextSiblingElement();
 		}
@@ -376,30 +327,11 @@ void renderScene(void) {
 	glutSwapBuffers();
 }
 
-void testModels(vector<Figure> figs){
-	for(int i = 0; i < figs.size(); i++){
-		printf("N DE MODELOS DO MODEL %d: %d\n", i, figs[i].getModelFiles().size());
-		if(figs[i].getModelFiles().size() > 0){
-			for(int o = 0; o < figs[i].getModelFiles().size();o++){
-				printf("MODELFILE %d: %s\n", o, figs[i].getModelFiles()[o].c_str());
-			}
-		}
-		printf("N FILHOS DO MODEL %d: %d\n", i, figs[i].getFiguras().size());
-		if(figs[i].getFiguras().size() > 0){
-			testModels(figs[i].getFiguras());
-		}
-
-	}
-}
-
 int main(int argc, char **argv) {
 
     if(argc > 1){
-		printf("VOU LER O XML\n");
 		lerXML(argv[1]);
 	}
-	printf("N DE MODELS %d\n", xml.models.size());
-	testModels(xml.models);
 
     // put GLUT init here
     glutInit(&argc, argv);

@@ -57,6 +57,14 @@
         "typeinfo": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "__hash_table": "cpp",
+        "__node_handle": "cpp",
+        "array": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "optional": "cpp",
+        "unordered_map": "cpp",
+        "algorithm": "cpp"
     }
 }
