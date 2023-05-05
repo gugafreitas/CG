@@ -1,5 +1,4 @@
 #include "generator.h"
-#include "../Engine/ponto.h"
 
 using namespace std;
 string fileName;
@@ -310,135 +309,138 @@ void box(double sideLength, int divisions, char *nome){
 	file.close();
 }
 
-Ponto calcula(vector<int> patch, vector<Ponto*> pontos, float u, float v) {
+float* formulaBezier( float tt, float *p1 , float *p2 , float *p3 , float *p4) {
 
-    float coef1 = (1 - u) * (1 - u) * (1 - u);
-    float coef2 = 3 * (1 - u) * (1 - u) * u;
-    float coef3 = 3 * (1 - u) * u * u;
-    float coef4 = u * u * u;
+	float ite = 1.0 - tt;
+	float* ppt = new float[3];
 
-    float x1 = coef1 * pontos[patch[0]]->getX() + coef2 * pontos[patch[1]]->getX() + coef3 * pontos[patch[2]]->getX() + coef4 * pontos[patch[3]]->getX();
-    float x2 = coef1 * pontos[patch[4]]->getX() + coef2 * pontos[patch[5]]->getX() + coef3 * pontos[patch[6]]->getX() + coef4 * pontos[patch[7]]->getX();
-    float x3 = coef1 * pontos[patch[8]]->getX() + coef2 * pontos[patch[9]]->getX() + coef3 * pontos[patch[10]]->getX() + coef4 * pontos[patch[11]]->getX();
-    float x4 = coef1 * pontos[patch[12]]->getX() + coef2 * pontos[patch[13]]->getX() + coef3 * pontos[patch[14]]->getX() + coef4 * pontos[patch[15]]->getX();
+	float x0 , x1 , x2 , x3;
+	x0 = pow(ite,3);
+	x1 = 3 * tt*pow(ite,2);
+	x2 = 3 * tt * tt * ite;
+	x3 = tt * tt * tt;
 
-    float y1 = coef1 * pontos[patch[0]]->getY() + coef2 * pontos[patch[1]]->getY() + coef3 * pontos[patch[2]]->getY() + coef4 * pontos[patch[3]]->getY();
-    float y2 = coef1 * pontos[patch[4]]->getY() + coef2 * pontos[patch[5]]->getY() + coef3 * pontos[patch[6]]->getY() + coef4 * pontos[patch[7]]->getY();
-    float y3 = coef1 * pontos[patch[8]]->getY() + coef2 * pontos[patch[9]]->getY() + coef3 * pontos[patch[10]]->getY() + coef4 * pontos[patch[11]]->getY();
-    float y4 = coef1 * pontos[patch[12]]->getY() + coef2 * pontos[patch[13]]->getY() + coef3 * pontos[patch[14]]->getY() + coef4 * pontos[patch[15]]->getY();
+	ppt[0] = x0*p1[0] + x1*p2[0] + x2*p3[0] + x3*p4[0];
+	ppt[1] = x0*p1[1] + x1*p2[1] + x2*p3[1] + x3*p4[1];
+	ppt[2] = x0*p1[2] + x1*p2[2] + x2*p3[2] + x3*p4[2];
 
-    float z1 = coef1 * pontos[patch[0]]->getZ() + coef2 * pontos[patch[1]]->getZ() + coef3 * pontos[patch[2]]->getZ() + coef4 * pontos[patch[3]]->getZ();
-    float z2 = coef1 * pontos[patch[4]]->getZ() + coef2 * pontos[patch[5]]->getZ() + coef3 * pontos[patch[6]]->getZ() + coef4 * pontos[patch[7]]->getZ();
-    float z3 = coef1 * pontos[patch[8]]->getZ() + coef2 * pontos[patch[9]]->getZ() + coef3 * pontos[patch[10]]->getZ() + coef4 * pontos[patch[11]]->getZ();
-    float z4 = coef1 * pontos[patch[12]]->getZ() + coef2 * pontos[patch[13]]->getZ() + coef3 * pontos[patch[14]]->getZ() + coef4 * pontos[patch[15]]->getZ();
 
-    float Coef1 = (1 - v) * (1 - v) * (1 - v);
-    float Coef2 = 3 * (1 - v) * (1 - v) * v;
-    float Coef3 = 3 * (1 - v) * v * v;
-    float Coef4 = v * v * v;
-
-    float x = Coef1 * x1 + Coef2 * x2 + Coef3 * x3 + Coef4 * x4;
-    float y = Coef1 * y1 + Coef2 * y2 + Coef3 * y3 + Coef4 * y4;
-    float z = Coef1 * z1 + Coef2 * z2 + Coef3 * z3 + Coef4 * z4;
-
-    return Ponto(x, y, z);
-
+	return ppt;
 }
 
-void curvaBezier(vector<Ponto> vertices, std::vector<int> patch, std::vector<Ponto*> pontosControlo, float u, float v, float intervalo) {
+float* bezier( float a , float b , int* indice , float** pontos , int ni , int np) {
 
-    Ponto p1 = calcula(patch, pontosControlo, u, v);
-    Ponto p2 = calcula(patch, pontosControlo, u, v + intervalo);
-    Ponto p3 = calcula(patch, pontosControlo, u + intervalo, v);
-    Ponto p4 = calcula(patch, pontosControlo, u + intervalo, v + intervalo);
+	float* ponto = new float[3];
+	float altp[4][3];
+	float res[4][3];
+	int i , j = 0 , x = 0;
+	float *calculo;
 
-    vertices.push_back(p1);
-    vertices.push_back(p4);
-    vertices.push_back(p2);
 
-    vertices.push_back(p4);
-    vertices.push_back(p1);
-    vertices.push_back(p3);
+	for( i = 0 ; i < 16 ; i++) {
+		altp[j][0] = pontos[indice[i]][0];
+		altp[j][0] = pontos[indice[i]][1];
+		altp[j][0] = pontos[indice[i]][2];
+
+		j++;
+
+		if( j % 4 == 0 ) {
+			ponto = formulaBezier(a,altp[0],altp[1],altp[2],altp[3]);
+			res[x][0] = ponto[0];
+			res[x][1] = ponto[1];
+			res[x][2] = ponto[2];
+
+			x++;
+
+			j = 0;
+		}
+
+	}
+	calculo = formulaBezier(b,res[0],res[1],res[2],res[3]);
+
+	return calculo;
 }
 
-//faz a leitura do ficheiro .patch
-void drawBezierPatches(int nivel, string origem) {
-    float intervalo = (float)1.0 / nivel;
-    string linha;
-    std::vector<std::vector<int> > patches;
-    std::vector<Ponto*> pontosControlo;
-    std::vector<Ponto> resultado;
+void patch( string file , int tess , string name) {
 
-    //abrir o ficheiro
-    ifstream file1("C:\\Users\\goncalofreitas\\Desktop\\CG\\Patches\\" + origem + ".patch");
-    if (!file1.is_open()) { cout << "Erro ao ler o ficheiro paches" << endl; return; }
+	//abrir ficheiros de input e output
 
-    //pega na primeira linha que é o número de patches ou seja numero de linhas a ler 
-    getline(file1, linha);
-    int nPatches = atoi(linha.c_str());
+	ofstream fileo(name);
+	string line , aux;
+	ifstream filei(file);
+	int i;
 
-    int t;
-    for (int i = 0; i < nPatches; i++) {
-        getline(file1, linha);     //pegar na linha atual
-        stringstream strstream(linha);
-        patches.push_back(std::vector<int>());
-        while (strstream >> t) {	// retirar as ,
-            patches[i].push_back(t);
-            if (strstream.peek() == ',') {
-                strstream.ignore();
-            }
-        }
-    }
+	//get patch
+	if(filei.is_open()) {
+		getline(filei,line);
+		int npatch = atoi(line.c_str());
+		int** indices = new int*[npatch];
+		cout << npatch << endl;
 
-    getline(file1,linha);
-    int nLinhas = atoi(linha.c_str());
-    float x,y,z;
-    for(int i=0;i < nLinhas; i++){
-        getline(file1,linha);
-        stringstream strstream(linha);
-        strstream >> x;
+		for(int r = 0 ; r < npatch ; r++) {
+			getline(filei,line);
+			indices[r] = new int[16];
 
-        if(strstream.peek() == ','){
-            strstream.ignore();
-        }
+			for(int j = 0 ; j < 16 ; j++) {
+				i = line.find(",");
+				aux = line.substr(0,i);
+				indices[r][j] = atoi(aux.c_str());
+				line.erase(0, i + 1);
+			} 
+		}
 
-        strstream >> y;
-        if (strstream.peek() == ',') {
-            strstream.ignore();
-        }
+		getline(filei,line);
+		int npontos = atoi(line.c_str());
+		cout << npontos << endl;
+		float** pontos = new float*[npontos];
 
-        strstream >> z;
-        if (strstream.peek() == ',') {
-            strstream.ignore();
-        }
+        //get pontos
+		for( int m = 0 ; m < npontos ; m++){
+			getline(filei,line);
+			pontos[m] = new float[3];
+			for( int l = 0 ; l < 3 ; l++) {
+				i = line.find(",");
+				aux = line.substr(0,i);
+				pontos[m][l] = atof(aux.c_str());
+				line.erase(0 , i + 1);
+			}
+		}
 
-        pontosControlo.push_back(new Ponto(x, y, z)); //adiciona o Ponto lido á lista de pontos
-    }
-    file1.close();
+		float incre = 1.0 / tess , u , v , u2 , v2;
+		float *** pontoRes = new float**[npatch];
 
-    for (int i = 0; i < nPatches; i++) {
-        float u = 0.0;
-        float v = 0.0;
-        for (int j = 0; j < nivel; j++) {
-            for (int m = 0; m < nivel; m++) {
-                curvaBezier(resultado, patches[i], pontosControlo, u, v, intervalo);
-                v += intervalo;
-            }
-            u += intervalo;
-            v = 0.0;
-        }
-    }
-    fstream(file);
-    file.open("C:\\Users\\goncalofreitas\\Desktop\\CG\\Engine\\" + fileName, fstream::out);  //abre ficheiro para escrita
-    if (file.is_open()) {
-        int vertices = resultado.size();
-        file << to_string(vertices) << endl;
-        for (int i = 0; i < vertices; i++) {
-            file << converte(resultado[i].getX(), resultado[i].getY(), resultado[i].getZ()) << endl;
-        }
-        file.close();
-    }
-    else { cout << "Nao se conseguiu abrir o ficheiro." << endl; }
+		for(int rr = 0 ; rr < npatch ; rr++) {
+			pontoRes[rr] = new float*[4];
+		 	//escrever pontos
+		 	for( int jj = 0 ; jj < tess ; jj++) {
+
+		 		for( int mn = 0 ; mn < tess ; mn++) {
+
+		 			u = jj*incre;
+		 			v = mn*incre;
+		 			u2 = (jj + 1)* incre;
+		 			v2 = (mn + 1)* incre;
+
+		 			pontoRes[rr][0] = bezier(u, v, indices[rr], pontos, npatch, npontos);
+					pontoRes[rr][1] = bezier(u, v2, indices[rr], pontos, npatch, npontos);
+					pontoRes[rr][2] = bezier(u2, v, indices[rr], pontos, npatch, npontos);
+					pontoRes[rr][3] = bezier(u2, v2, indices[rr], pontos, npatch, npontos);
+
+                    fileo << pontoRes[rr][0][0] << "," << pontoRes[rr][0][1] << "," << pontoRes[rr][0][2] << endl;
+					fileo << pontoRes[rr][2][0] << "," << pontoRes[rr][2][1] << "," << pontoRes[rr][2][2] << endl;
+					fileo << pontoRes[rr][3][0] << "," << pontoRes[rr][3][1] << "," << pontoRes[rr][3][2] << endl;
+
+					fileo << pontoRes[rr][0][0] << "," << pontoRes[rr][0][1] << "," << pontoRes[rr][0][2] << endl;
+					fileo << pontoRes[rr][3][0] << "," << pontoRes[rr][3][1] << "," << pontoRes[rr][3][2] << endl;
+					fileo << pontoRes[rr][1][0] << "," << pontoRes[rr][1][1] << "," << pontoRes[rr][1][2] << endl;
+		 		}
+		 	}
+
+		 }
+	}
+
+	filei.close();
+	fileo.close();
 }
 
 int main(int argc, char *argv[]) {
@@ -473,8 +475,7 @@ int main(int argc, char *argv[]) {
     }
     else if(strcmp(argv[1],"Patch")==0){
         if(argc == 5){
-            string aux = argv[2];
-            drawBezierPatches(atoi(argv[3]),aux);
+            patch(argv[2], atoi(argv[3]), argv[4]);
         }
         else
             printf("NUMERO DE ARGUMENTOS INCORRETOS!");
