@@ -2,6 +2,11 @@
 #include "../Engine/ponto.h"
 
 using namespace std;
+string fileName;
+
+string converte(float x, float y, float z){
+    return to_string(x) + " " + to_string(y) + " " + to_string(z);
+}
 
 void plane(int lado, int divs, char* nome){
     //FILE *fp = fopen(nome, "w");
@@ -307,8 +312,6 @@ void box(double sideLength, int divisions, char *nome){
 
 Ponto calcula(vector<int> patch, vector<Ponto*> pontos, float u, float v) {
 
-
-
     float coef1 = (1 - u) * (1 - u) * (1 - u);
     float coef2 = 3 * (1 - u) * (1 - u) * u;
     float coef3 = 3 * (1 - u) * u * u;
@@ -342,33 +345,34 @@ Ponto calcula(vector<int> patch, vector<Ponto*> pontos, float u, float v) {
 
 }
 
-void curvaBezier(vector<Ponto>* vertices, std::vector<int> patch, std::vector<Ponto*> pontosControlo, float u, float v, float intervalo) {
+void curvaBezier(vector<Ponto> vertices, std::vector<int> patch, std::vector<Ponto*> pontosControlo, float u, float v, float intervalo) {
 
     Ponto p1 = calcula(patch, pontosControlo, u, v);
     Ponto p2 = calcula(patch, pontosControlo, u, v + intervalo);
     Ponto p3 = calcula(patch, pontosControlo, u + intervalo, v);
     Ponto p4 = calcula(patch, pontosControlo, u + intervalo, v + intervalo);
 
-    vertices->push_back(p1);
-    vertices->push_back(p4);
-    vertices->push_back(p2);
+    vertices.push_back(p1);
+    vertices.push_back(p4);
+    vertices.push_back(p2);
 
-    vertices->push_back(p4);
-    vertices->push_back(p1);
-    vertices->push_back(p3);
+    vertices.push_back(p4);
+    vertices.push_back(p1);
+    vertices.push_back(p3);
 }
 
 //faz a leitura do ficheiro .patch
-void drawBezierPatches(string ficheiro, int nivel, string origem) {
+void drawBezierPatches(int nivel, string origem) {
     float intervalo = (float)1.0 / nivel;
     string linha;
-    std::vector<std::vector<int>> patches;
+    std::vector<std::vector<int> > patches;
     std::vector<Ponto*> pontosControlo;
     std::vector<Ponto> resultado;
 
     //abrir o ficheiro
-    ifstream file1(ficheiro);
+    ifstream file1("C:\\Users\\goncalofreitas\\Desktop\\CG\\Patches\\" + origem + ".patch");
     if (!file1.is_open()) { cout << "Erro ao ler o ficheiro paches" << endl; return; }
+
     //pega na primeira linha que é o número de patches ou seja numero de linhas a ler 
     getline(file1, linha);
     int nPatches = atoi(linha.c_str());
@@ -385,6 +389,56 @@ void drawBezierPatches(string ficheiro, int nivel, string origem) {
             }
         }
     }
+
+    getline(file1,linha);
+    int nLinhas = atoi(linha.c_str());
+    float x,y,z;
+    for(int i=0;i < nLinhas; i++){
+        getline(file1,linha);
+        stringstream strstream(linha);
+        strstream >> x;
+
+        if(strstream.peek() == ','){
+            strstream.ignore();
+        }
+
+        strstream >> y;
+        if (strstream.peek() == ',') {
+            strstream.ignore();
+        }
+
+        strstream >> z;
+        if (strstream.peek() == ',') {
+            strstream.ignore();
+        }
+
+        pontosControlo.push_back(new Ponto(x, y, z)); //adiciona o Ponto lido á lista de pontos
+    }
+    file1.close();
+
+    for (int i = 0; i < nPatches; i++) {
+        float u = 0.0;
+        float v = 0.0;
+        for (int j = 0; j < nivel; j++) {
+            for (int m = 0; m < nivel; m++) {
+                curvaBezier(resultado, patches[i], pontosControlo, u, v, intervalo);
+                v += intervalo;
+            }
+            u += intervalo;
+            v = 0.0;
+        }
+    }
+    fstream(file);
+    file.open("C:\\Users\\goncalofreitas\\Desktop\\CG\\Engine\\" + fileName, fstream::out);  //abre ficheiro para escrita
+    if (file.is_open()) {
+        int vertices = resultado.size();
+        file << to_string(vertices) << endl;
+        for (int i = 0; i < vertices; i++) {
+            file << converte(resultado[i].getX(), resultado[i].getY(), resultado[i].getZ()) << endl;
+        }
+        file.close();
+    }
+    else { cout << "Nao se conseguiu abrir o ficheiro." << endl; }
 }
 
 int main(int argc, char *argv[]) {
@@ -416,6 +470,14 @@ int main(int argc, char *argv[]) {
 	    }
 	    else
 		    printf("NUMERO DE ARGUMENTOS INCORRETOS!");
+    }
+    else if(strcmp(argv[1],"Patch")==0){
+        if(argc == 5){
+            string aux = argv[2];
+            drawBezierPatches(atoi(argv[3]),aux);
+        }
+        else
+            printf("NUMERO DE ARGUMENTOS INCORRETOS!");
     }
     else{
         printf("FIGURA NÃO IMPLEMENTADA");
