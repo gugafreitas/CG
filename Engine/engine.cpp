@@ -16,7 +16,7 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include "transformacao.h"
+#include "figure.h"
 
 
 using namespace tinyxml2;
