@@ -65,6 +65,7 @@
         "complex": "cpp",
         "optional": "cpp",
         "unordered_map": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "list": "cpp"
     }
 }

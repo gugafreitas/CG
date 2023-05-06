@@ -1,4 +1,3 @@
-#include "ponto.h"
 #include "transformacao.h"
 #include <string>
 #include <vector>

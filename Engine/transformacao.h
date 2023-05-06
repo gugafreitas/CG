@@ -1,89 +1,99 @@
+#ifndef CLASS2_TRANSFORMACOES_H
+#define CLASS2_TRANSFORMACOES_H
 
+#include "ponto.h"
+#include <vector>
+//#include <GL/glut.h>
 
+using namespace std;
 
 class Transformacao{
-    float translacaoX;
-    float translacaoY;
-    float translacaoZ;
-    float rotacaoX;
-    float rotacaoY;
-    float rotacaoZ;
-    float rotacaoAngle;
-    float escalaX;
-    float escalaY;
-    float escalaZ;
+    //rotação
+    float rot_Tempo;
+    float rot_Angulo;
+    float rot_X;
+    float rot_Y;
+    float rot_Z;
 
-    public:
-        Transformacao();
-        Transformacao(float,float,float,float,float,float,float,float,float,float);
+    //translação
+    float tempo;
+    bool align;
+    vector <Ponto> pontos;
+    vector <Ponto> pontosCurva;
+    float trans_X;
+    float trans_Y;
+    float trans_Z;
 
-        float getTranslacaoX()
-        {return translacaoX;}
-        void setTranslacaoX(float a)
-        {translacaoX=a;}
-        void sumTranslacaoX(float a)
-        {translacaoX+=a;}
+    //escala
+    float esc_X;
+    float esc_Y;
+    float esc_Z;
 
-        float getTranslacaoY()
-        {return translacaoY;}
-        void setTranslacaoY(float a)
-        {translacaoY=a;}
-        void sumTranslacaoY(float a)
-        {translacaoY+=a;}
+public:
 
-        float getTranslacaoZ()
-        {return translacaoZ;}
-        void setTranslacaoZ(float a)
-        {translacaoZ=a;}
-        void sumTranslacaoZ(float a)
-        {translacaoZ+=a;}
+    Transformacao();
 
-        float getRotacaoX()
-        {return rotacaoX;}
-        void setRotacaoX(float a)
-        {rotacaoX=a;}
-        void sumRotacaoX(float a)
-        {rotacaoX+=a;}
-        
-        float getRotacaoY()
-        {return rotacaoY;}
-        void setRotacaoY(float a)
-        {rotacaoY=a;}
-        void sumRotacaoY(float a)
-        {rotacaoY+=a;}
+    Transformacao(float,float,float,float,float,float,bool,vector<Ponto>,vector<Ponto>,float,float,float,float,float,float);
 
-        float getRotacaoZ()
-        {return rotacaoZ;}
-        void setRotacaoZ(float a)
-        {rotacaoZ=a;}
-        void sumRotacaoZ(float a)
-        {rotacaoZ+=a;}
+    Transformacao(float, vector<Ponto>);
 
-        float getRotacaoAngle()
-        {return rotacaoAngle;}
-        void setRotacaoAngle(float a)
-        {rotacaoAngle=a;}
-        void sumRotacaoAngle(float a)
-        {rotacaoAngle+=a;}
+    float getRotTempo();
+    float getRotAngulo();
+    float getRotX();
+    float getRotY();
+    float getRotZ();
 
-        float getEscalaX()
-        {return escalaX;}
-        void setEscalaX(float a)
-        {escalaX=a;}
-        void sumEscalaX(float a)
-        {escalaX=escalaX*a;}
+    float getTransTempo();
+    bool getTransAlign();
+    vector<Ponto> getTransPontos();
+    vector<Ponto> getTransPontosCurva();
+    float getTrans_X();
+    float getTrans_Y();
+    float getTrans_Z();
 
-        float getEscalaY()
-        {return escalaY;}
-        void setEscalaY(float a)
-        {escalaY=a;}
-        void sumEscalaY(float a)
-        {escalaY=escalaY*a;}
+    float getEscalaX();
+    float getEscalaY();
+    float getEscalaZ();
 
-        float getEscalaZ()
-        {return escalaZ;}
-        void setEscalaZ(float a)
-        {escalaZ=a;}
-        void sumEscalaZ(float a)
-        {escalaZ=escalaZ*a;}
+    void setRotTempo(float);
+    void setRotAngulo(float);
+    void setRot_X(float);
+    void setRot_Y(float);
+    void setRot_Z(float);
+
+    void setTransTempo(float);
+    void setTransAlign(bool);
+    void setTransPontos(vector<Ponto>);
+    void setTransPontosCurva(vector<Ponto>);
+    void setTrans_X(float);
+    void setTrans_Y(float);
+    void setTrans_Z(float);
+    void sumTrans_X(float);
+    void sumTrans_Y(float);
+    void sumTrans_Z(float);
+
+    void setEscalaX(float);
+    void setEscalaY(float);
+    void setEscalaZ(float);
+/*
+    void buildRotMatrix(float*, float*, float*, float*);
+
+    void cross(float*, float*, float*);
+
+    void normalize(float*);
+
+    void getCatmullRomPoint(float, Ponto, Ponto, Ponto, Ponto, float*, float*);
+
+    void getGlobalCatmullRomPoint(float, float*, float*, vector<Ponto>);
+
+    void buildCurve(float*, float*);
+
+    void alinhamentoCurva(float*);
+
+    void drawCatmullRomCurve();
+
+    void draw();
+*/
 };
+
+#endif //CLASS2_TRANSFORMACOES_H

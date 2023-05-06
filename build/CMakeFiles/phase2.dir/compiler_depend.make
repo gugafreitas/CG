@@ -434,8 +434,12 @@ CMakeFiles/phase2.dir/engine.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/engi
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/vector \
   /Users/goncalofreitas/Desktop/CG/Engine/figure.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/transformacao.h \
   /Users/goncalofreitas/Desktop/CG/Engine/ponto.h \
-  /Users/goncalofreitas/Desktop/CG/Engine/transformacao.h
+  /Users/goncalofreitas/Desktop/CG/Engine/modelo.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/list \
+  /Users/goncalofreitas/Desktop/CG/Engine/color.h \
+  /Users/goncalofreitas/Desktop/CG/Engine/grupo.h
 
 CMakeFiles/phase2.dir/figure.cpp.o: /Users/goncalofreitas/Desktop/CG/Engine/figure.cpp \
   /Users/goncalofreitas/Desktop/CG/Engine/figure.h \
@@ -934,9 +938,15 @@ CMakeFiles/phase2.dir/transformacao.cpp.o: /Users/goncalofreitas/Desktop/CG/Engi
 
 /Users/goncalofreitas/Desktop/CG/Engine/figure.cpp:
 
-/Users/goncalofreitas/Desktop/CG/Engine/transformacao.h:
+/Users/goncalofreitas/Desktop/CG/Engine/grupo.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/list:
+
+/Users/goncalofreitas/Desktop/CG/Engine/modelo.h:
 
 /Users/goncalofreitas/Desktop/CG/Engine/ponto.h:
+
+/Users/goncalofreitas/Desktop/CG/Engine/transformacao.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__split_buffer:
 
@@ -1229,6 +1239,8 @@ CMakeFiles/phase2.dir/transformacao.cpp.o: /Users/goncalofreitas/Desktop/CG/Engi
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__iterator/concepts.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__memory/pointer_safety.h:
+
+/Users/goncalofreitas/Desktop/CG/Engine/color.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX13.0.sdk/usr/include/c++/v1/__algorithm/find_end.h:
 

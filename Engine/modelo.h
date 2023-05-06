@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
+//#include <GL/glew.h>
+//#include <GL/glut.h>
 #include <list>
 #include <vector>
 #include <string>
