@@ -329,10 +329,10 @@ void aplicaRotacao(Transformacao rot) {
 	float aux, anguloRot;
 	int tempoPrograma;
 
-	if (rot.getTempo() != 0) {
+	if (rot.getRotTempo() != 0) {
 		tempoPrograma = glutGet(GLUT_ELAPSED_TIME);
-		aux = tempoPrograma % (int)(rot.getTempo() * 1000);
-		anguloRot = (aux * 360) / (rot.getTempo() * 1000);
+		aux = tempoPrograma % (int)(rot.getRotTempo() * 1000);
+		anguloRot = (aux * 360) / (rot.getRotTempo() * 1000);
 		glRotatef(anguloRot, rot.getX(), rot.getY(), rot.getZ());
 	}
 }
