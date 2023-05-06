@@ -60,16 +60,22 @@ float getRotX()
 {return rot_X;}
 void setRotX(float a)
 {rot_X=a;}
+void sumRotacaoX(float a)
+{rot_X=rot_X+a;}
 
 float getRotY()
 {return rot_Y;}
 void setRotY(float a)
 {rot_Y=a;}
+void sumRotacaoY(float a)
+{rot_Y=rot_Y+a;}
 
 float getRotZ()
 {return rot_Z;}
 void setRotZ(float a)
 {rot_Z=a;}
+void sumRotacaoZ(float a)
+{rot_Z=rot_Z+a;}
 
 
 
