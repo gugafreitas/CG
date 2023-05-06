@@ -60,6 +60,9 @@ public:
     void setRot_X(float);
     void setRot_Y(float);
     void setRot_Z(float);
+    void sumRotacaoX(float);
+    void sumRotacaoY(float);
+    void sumRotacaoZ(float);
 
     void setTransTempo(float);
     void setTransAlign(bool);
@@ -75,6 +78,10 @@ public:
     void setEscalaX(float);
     void setEscalaY(float);
     void setEscalaZ(float);
+    
+    void sumEscalaX(float);
+    void sumEscalaY(float);
+    void sumEscalaZ(float);
 /*
     void buildRotMatrix(float*, float*, float*, float*);
 
